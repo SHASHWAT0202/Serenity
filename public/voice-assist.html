@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity - AI Therapist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 25%, #81d4fa 50%, #4fc3f7 75%, #29b6f6 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Floating elements matching Serenity style */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .circle-1 {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            left: 10%;
+            background: linear-gradient(45deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1));
+            animation-delay: 0s;
+        }
+
+        .circle-2 {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            background: linear-gradient(45deg, rgba(156, 39, 176, 0.1), rgba(103, 58, 183, 0.1));
+            animation-delay: 3s;
+        }
+
+        .circle-3 {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 70%;
+            background: linear-gradient(45deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+            75% { transform: translateY(-20px) rotate(270deg); }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Main content area */
+        .main-content {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 32px;
+            padding: 4rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo area matching Serenity */
+        .logo-section {
+            margin-bottom: 3rem;
+        }
+
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6, #0288d1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(79, 195, 247, 0.3);
+            animation: gentle-pulse 4s infinite ease-in-out;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #fff, #e1f5fe);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #4fc3f7, #0288d1, #01579b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: #546e7a;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Features matching Serenity style */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .anonymous-icon {
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+            color: white;
+        }
+
+        .ai-icon {
+            background: linear-gradient(135deg, #ab47bc, #8e24aa);
+            color: white;
+        }
+
+        .available-icon {
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
+            color: white;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: #546e7a;
+            font-weight: 500;
+        }
+
+        /* Single Home Button */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #29b6f6, #0288d1);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(41, 182, 246, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(41, 182, 246, 0.4);
+            background: linear-gradient(135deg, #0288d1, #0277bd);
+        }
+
+        .home-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Trust indicators */
+        .trust-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .trust-text {
+            font-size: 0.95rem;
+            color: #78909c;
+            margin-bottom: 1.5rem;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #607d8b;
+        }
+
+        .trust-badge-icon {
+            font-size: 1rem;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2.5rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .features {
+                gap: 1.5rem;
+            }
+
+            .feature-item {
+                min-width: 120px;
+            }
+
+            .trust-badges {
+                gap: 1rem;
+                justify-content: space-around;
+            }
+
+            .logo-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .logo-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .feature-item {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        /* Subtle animations */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating-elements">
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="floating-circle circle-3"></div>
+    </div>
+
+    <div class="container">
+        <div class="main-content animate-fade-in">
+            <!-- Logo section matching Serenity -->
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <div class="logo-icon">🧘</div>
+                </div>
+                <h1 class="main-title">Serenity</h1>
+                <p class="subtitle">Your AI therapist is here to listen, understand, and guide you on your mental wellness journey.</p>
+            </div>
+
+            <!-- Features matching Serenity style -->
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon anonymous-icon">🔒</div>
+                    <span class="feature-text">100% Anonymous</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon ai-icon">🤖</div>
+                    <span class="feature-text">AI-Powered Support</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon available-icon">⏰</div>
+                    <span class="feature-text">24/7 Available</span>
+                </div>
+            </div>
+
+            <!-- Single Home Button -->
+            <a href="https://serenitycm.vercel.app" class="home-button">
+                <span>🏠</span>
+                Home
+            </a>
+
+            <!-- Trust section -->
+            <div class="trust-section">
+                <p class="trust-text">Trusted by thousands for mental wellness support</p>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <span class="trust-badge-icon">🛡️</span>
+                        <span>Privacy First</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="trust-badge-icon">🏥</span>
+                        <span>Medical Grade</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="trust-badge-icon">⭐</span>
+                        <span>Evidence Based</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VAPI Widget -->
+    <vapi-widget
+        public-key="4090f4c6-7d97-4f23-b113-25668300bce2"
+        assistant-id="ce5fe09a-ff18-4c58-be57-382879dac614"
+        mode="voice"
+        theme="light"
+        base-bg-color="#ffffff"
+        accent-color="#29b6f6"
+        cta-button-color="#ffffff"
+        cta-button-text-color="#0288d1"
+        border-radius="medium"
+        size="compact"
+        position="bottom-right"
+        title="TALK WITH therapist"
+        start-button-text="Start"
+        end-button-text="End Call"
+        chat-first-message="Hey, How can I help you today?"
+        chat-placeholder="Type your message..."
+        voice-show-transcript="true"
+        consent-required="true"
+        consent-title="Terms and conditions"
+        consent-content="By clicking 'Agree,' and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service."
+        consent-storage-key="vapi_widget_consent"
+    ></vapi-widget>
+
+    <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+
+    <script>
+        // Simple fade-in animation on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContent = document.querySelector('.main-content');
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                mainContent.style.transition = 'all 1s ease-out';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>

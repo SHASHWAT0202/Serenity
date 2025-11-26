@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, MicOff, AlertTriangle, Heart, Bot, User, Sparkles, Shield, Clock } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 
 // Minimal Web Speech types to avoid `any`
 interface RecognitionResultEvent {
@@ -144,28 +145,29 @@ const AITherapist = () => {
     }
   };
 
-  // Gemini client init (browser)
-  const STATIC_GEMINI_API_KEY = 'AIzaSyBkQXZXu2M4gd_2M8zBS2Hs2SZeP4kMXUA';
+  // API Keys and Client Init
   const envVars = (import.meta as unknown as { env: Record<string, string | undefined> }).env;
-  const GEMINI_API_KEY =
-    envVars?.VITE_GEMINI_API_KEY ||
-    envVars?.VITE_GOOGLE_API_KEY ||
-    envVars?.VITE_GOOGLE_GENAI_API_KEY ||
-    envVars?.VITE_GOOGLE_GEMINI_API_KEY ||
-    envVars?.VITE_GENAI_API_KEY ||
-    envVars?.VITE_GEN_AI_API_KEY ||
-    STATIC_GEMINI_API_KEY;
+  const OPENAI_API_KEY = envVars?.VITE_OPENAI_API_KEY;
+  const GEMINI_API_KEY = envVars?.VITE_GEMINI_API_KEY;
 
+  const openAIRef = useRef<OpenAI | null>(null);
   const genAIRef = useRef<GoogleGenerativeAI | null>(null);
 
   useEffect(() => {
-    if (GEMINI_API_KEY) {
+    // Prioritize OpenAI (cheaper and more reliable)
+    if (OPENAI_API_KEY) {
+      openAIRef.current = new OpenAI({
+        apiKey: OPENAI_API_KEY,
+        dangerouslyAllowBrowser: true
+      });
+      console.info('[Serenity AI] ✅ OpenAI API configured (GPT-4o-mini - most cost-effective!)');
+    } else if (GEMINI_API_KEY) {
       genAIRef.current = new GoogleGenerativeAI(GEMINI_API_KEY);
-      console.info('[Serenity AI] Gemini API key detected:', true);
+      console.info('[Serenity AI] ✅ Gemini API configured (fallback)');
     } else {
-      console.warn('[Serenity AI] Gemini API key not found. Using template responses.');
+      console.warn('[Serenity AI] ⚠️ No API keys found. Using intelligent template responses.');
     }
-  }, [GEMINI_API_KEY]);
+  }, [OPENAI_API_KEY, GEMINI_API_KEY]);
 
   const buildTherapistPrompt = (userMessage: string): string => {
     const recentHistory = messages
@@ -180,8 +182,8 @@ RESPONSE STYLE (VERY IMPORTANT):
 - Include 1-2 relevant emojis naturally placed
 - Mix validation, practical tips, and gentle questions
 - Sound human, warm, and relatable - not clinical
-- Use section headers with ** ** for better formatting when helpful
 - Keep responses engaging but not overwhelming
+- NEVER use ** ** or any markdown formatting symbols - write in plain text only
 
 CONTENT APPROACH:
 - Start with genuine empathy and validation
@@ -197,6 +199,7 @@ AVOID:
 - Generic responses
 - Being overly formal
 - Excessive emojis (max 2)
+- Markdown formatting like ** ** or __ __ or any special symbols
 
 For crisis situations: Gently mention KIRAN 1800-599-0019 (India's mental health helpline).
 
@@ -232,61 +235,109 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity foll
   };
 
   const generateTherapistResponse = async (userMessage: string): Promise<string> => {
-    if (!genAIRef.current) {
-      console.info('[Serenity AI] Using fallback template (no Gemini client).');
-      return generateAIResponse(userMessage);
-    }
-    try {
-      const availableModels = [
-        'gemini-2.0-flash-exp',
-        'gemini-2.0-flash', 
-        'gemini-1.5-pro',
-        'gemini-1.5-flash'
-      ];
-      
-      let model;
-      let modelName = '';
-      
-      for (const modelId of availableModels) {
-        try {
-          model = genAIRef.current.getGenerativeModel({
-            model: modelId,
-            generationConfig: {
-              temperature: 0.9,
-              topP: 0.95,
-              topK: 40,
-              maxOutputTokens: 800,
-              candidateCount: 1,
-            },
-          });
-          modelName = modelId;
-          break;
-        } catch (e) {
-          continue;
+    // Priority 1: OpenAI GPT-4o-mini (most cost-effective!)
+    if (openAIRef.current) {
+      try {
+        console.info('[Serenity AI] 💬 Using OpenAI GPT-4o-mini...');
+        
+        const messages = [
+          {
+            role: 'system' as const,
+            content: buildTherapistPrompt('')
+          },
+          {
+            role: 'user' as const,
+            content: userMessage
+          }
+        ];
+        
+        // Natural thinking time
+        const thinkingTime = Math.random() * 1500 + 1500; // 1.5-3 seconds
+        await new Promise(resolve => setTimeout(resolve, thinkingTime));
+        
+        const completion = await openAIRef.current.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: messages,
+          temperature: 0.9,
+          max_tokens: 500,
+          top_p: 0.95
+        });
+        
+        const text = completion.choices[0]?.message?.content ?? '';
+        const cleaned = formatTherapistText(text);
+        
+        // Log token usage for budget tracking
+        if (completion.usage) {
+          const cost = (completion.usage.prompt_tokens * 0.15 / 1000000) + 
+                      (completion.usage.completion_tokens * 0.60 / 1000000);
+          console.info(`[Serenity AI] 💰 Tokens used: ${completion.usage.total_tokens} | Cost: $${cost.toFixed(6)}`);
         }
+        
+        if (cleaned) {
+          return cleaned;
+        }
+      } catch (error) {
+        console.error('[Serenity AI] OpenAI error:', error);
+        console.info('[Serenity AI] Falling back to Gemini...');
       }
-      
-      if (!model) {
-        throw new Error('No available models found');
-      }
-      
-      const prompt = buildTherapistPrompt(userMessage);
-      
-      // Natural thinking time
-      const thinkingTime = Math.random() * 1500 + 1500; // 1.5-3 seconds
-      await new Promise(resolve => setTimeout(resolve, thinkingTime));
-      
-      const result = await model.generateContent(prompt);
-      const text = result.response?.text?.() ?? '';
-      const cleaned = formatTherapistText(text);
-      if (cleaned) {
-        return cleaned;
-      }
-      return generateAIResponse(userMessage);
-    } catch (error) {
-      console.error('[Serenity AI] Model error:', error);
-      return generateAIResponse(userMessage);
     }
+    
+    // Priority 2: Gemini fallback
+    if (genAIRef.current) {
+      try {
+        const availableModels = [
+          'gemini-2.0-flash-exp',
+          'gemini-2.0-flash', 
+          'gemini-1.5-pro',
+          'gemini-1.5-flash'
+        ];
+        
+        let model;
+        let modelName = '';
+        
+        for (const modelId of availableModels) {
+          try {
+            model = genAIRef.current.getGenerativeModel({
+              model: modelId,
+              generationConfig: {
+                temperature: 0.9,
+                topP: 0.95,
+                topK: 40,
+                maxOutputTokens: 800,
+                candidateCount: 1,
+              },
+            });
+            modelName = modelId;
+            break;
+          } catch (e) {
+            continue;
+          }
+        }
+        
+        if (!model) {
+          throw new Error('No available models found');
+        }
+        
+        const prompt = buildTherapistPrompt(userMessage);
+        
+        // Natural thinking time
+        const thinkingTime = Math.random() * 1500 + 1500;
+        await new Promise(resolve => setTimeout(resolve, thinkingTime));
+        
+        const result = await model.generateContent(prompt);
+        const text = result.response?.text?.() ?? '';
+        const cleaned = formatTherapistText(text);
+        if (cleaned) {
+          return cleaned;
+        }
+      } catch (error) {
+        console.error('[Serenity AI] Gemini error:', error);
+      }
+    }
+    
+    // Priority 3: Template fallback
+    console.info('[Serenity AI] Using fallback template responses.');
+    return generateAIResponse(userMessage);
   };
 
   const handleSendMessage = async () => {

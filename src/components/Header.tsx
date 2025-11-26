@@ -59,15 +59,15 @@ const Header = () => {
     <header className="fixed top-0 w-full z-[2147483647] bg-white/70 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md border-b border-white/20 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.2)] pointer-events-auto">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-serenity-500 to-lavender-500 rounded-full flex items-center justify-center animate-breathing">
-              <span className="text-white text-xl">🧘</span>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+              <span className="text-white text-2xl">🧘‍♀️</span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gradient">Serenity</h1>
-              <p className="text-xs text-serenity-600">Your Mental Wellness Sanctuary</p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">Serenity</h1>
+              <p className="text-xs text-purple-600/70">Mental Wellness Sanctuary</p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">

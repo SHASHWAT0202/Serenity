@@ -94,10 +94,25 @@
 }
 
 @layer components {
+  /* Premium Glass Cards */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-ocean-aqua/20 rounded-[40px] shadow-xl hover:shadow-2xl transition-all duration-500;
+  }
+  
   .therapeutic-card {
     @apply bg-card-gradient backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02];
   }
   
+  /* Ocean Theme Gradients */
+  .ocean-gradient-text {
+    @apply bg-gradient-to-r from-ocean-deep via-ocean-primary to-ocean-aqua bg-clip-text text-transparent;
+  }
+  
+  .ocean-gradient-bg {
+    @apply bg-gradient-to-br from-ocean-light via-ocean-mist to-white;
+  }
+  
+  /* Ambient Animations */
   .breathing-element {
     @apply animate-breathing;
   }
@@ -106,30 +121,48 @@
     @apply animate-float;
   }
   
-  .gentle-glow {
-    box-shadow: 0 0 30px rgba(186, 230, 253, 0.3);
+  .drift-element {
+    @apply animate-drift;
   }
   
+  /* Premium Glow Effects */
+  .gentle-glow {
+    box-shadow: 0 0 40px rgba(168, 228, 224, 0.4);
+  }
+  
+  .ocean-glow {
+    box-shadow: 0 0 60px rgba(50, 107, 112, 0.3);
+  }
+  
+  /* Legacy */
   .text-gradient {
     @apply bg-gradient-to-r from-serenity-600 via-lavender-600 to-mint-600 bg-clip-text text-transparent;
   }
 }
 
-/* Custom scrollbar */
+/* Premium Serenity Ocean Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(186, 230, 253, 0.1);
+  background: rgba(234, 253, 252, 0.3);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #bae6fd, #e9d5ff);
+  background: linear-gradient(135deg, #A8E4E0, #326B70);
   border-radius: 10px;
+  border: 2px solid rgba(234, 253, 252, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #7dd3fc, #d8b4fe);
+  background: linear-gradient(135deg, #326B70, #164A4A);
+}
+
+/* Smooth scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #A8E4E0 rgba(234, 253, 252, 0.3);
 }

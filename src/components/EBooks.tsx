@@ -25,7 +25,7 @@ const BOOKS = [
     title: "Food & Mood",
     author: "Serenity Team",
     description: "Understand how nutrition impacts anxiety, focus, and overall mood with practical meal ideas.",
-    cover: "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=800&q=80&auto=format&fit=crop",
+    cover: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80&auto=format&fit=crop",
     link: "https://www.health.harvard.edu/blog/nutritional-psychiatry-your-brain-on-food-201511168626",
     tag: "Nutrition",
   },

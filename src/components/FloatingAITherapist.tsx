@@ -13,6 +13,9 @@ interface FloatingAITherapistProps {
 const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
   const [isMinimized, setIsMinimized] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [showPhoneInput, setShowPhoneInput] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isCallInProgress, setIsCallInProgress] = useState(false);
   const miniChatRef = useRef<HTMLDivElement>(null);
 
   // Close mini chat when clicking outside
@@ -20,6 +23,7 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (miniChatRef.current && !miniChatRef.current.contains(event.target as Node)) {
         setIsMinimized(true);
+        setShowPhoneInput(false);
       }
     };
 
@@ -32,12 +36,34 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
     };
   }, [isMinimized]);
 
-async function startCall() {
-  const call = await vapi.calls.create({ assistantId: 'ce5fe09a-ff18-4c58-be57-382879dac614' ,
-  phoneNumberId: 'f3cf295d-4d54-4709-b5a8-d6e9172ae236',
-  customer: { number: '+919794177498' },
-});
-console.log(call.id);}
+  const handleVoiceCallClick = () => {
+    setShowPhoneInput(true);
+  };
+
+  const startCall = async () => {
+    if (!phoneNumber.trim()) {
+      alert('Please enter a phone number');
+      return;
+    }
+
+    setIsCallInProgress(true);
+    try {
+      const call = await vapi.calls.create({ 
+        assistantId: 'ce5fe09a-ff18-4c58-be57-382879dac614',
+        phoneNumberId: 'f3cf295d-4d54-4709-b5a8-d6e9172ae236',
+        customer: { number: phoneNumber },
+      });
+      console.log('Call initiated:', call.id);
+      alert('Call initiated successfully! You will receive a call shortly.');
+      setShowPhoneInput(false);
+      setPhoneNumber('');
+    } catch (error) {
+      console.error('Call failed:', error);
+      alert('Failed to initiate call. Please try again.');
+    } finally {
+      setIsCallInProgress(false);
+    }
+  };
 
   return (
     <>
@@ -91,24 +117,71 @@ console.log(call.id);}
             <p className="text-sm text-gray-600 mb-4">
               I'm here to provide a safe space for your thoughts and feelings.
             </p>
-            <div className="flex flex-col gap-3 w-full px-4">
-              <button
-                onClick={() => {
-                  setIsMinimized(true);
-                  onOpenFullChat();
-                }}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full"
-              >
-                💬 Start Text Chat
-              </button>
-              <button
-                onClick={startCall}
-                className="group bg-white border-2 border-purple-300 hover:border-purple-500 text-purple-600 px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full flex items-center justify-center gap-2"
-              >
-                <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                Start Voice Call
-              </button>
-            </div>
+            
+            {!showPhoneInput ? (
+              <div className="flex flex-col gap-3 w-full px-4">
+                <button
+                  onClick={() => {
+                    setIsMinimized(true);
+                    onOpenFullChat();
+                  }}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full"
+                >
+                  💬 Start Text Chat
+                </button>
+                <button
+                  onClick={handleVoiceCallClick}
+                  className="group bg-white border-2 border-purple-300 hover:border-purple-500 text-purple-600 px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full flex items-center justify-center gap-2"
+                >
+                  <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                  Start Voice Call
+                </button>
+              </div>
+            ) : (
+              <div className="w-full px-4 space-y-3">
+                <div className="text-left">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2">
+                    Enter your phone number
+                  </label>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="+1234567890"
+                    className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Include country code (e.g., +1 for US)</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setShowPhoneInput(false);
+                      setPhoneNumber('');
+                    }}
+                    className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-300 transition-all duration-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={startCall}
+                    disabled={isCallInProgress || !phoneNumber.trim()}
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isCallInProgress ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Calling...
+                      </>
+                    ) : (
+                      <>
+                        <Phone className="w-4 h-4" />
+                        Call Now
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

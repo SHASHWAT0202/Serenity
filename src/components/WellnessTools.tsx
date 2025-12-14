@@ -30,8 +30,7 @@ const WellnessTools = () => {
       icon: <Activity size={32} />,
       gradient: 'from-purple-500 to-pink-500',
       hoverShadow: 'hover:shadow-purple-500/20',
-      isExternal: true,
-      externalUrl: 'https://serenityface.vercel.app/'
+      isExternal: false
     },
     {
       id: 'yoga',
@@ -144,11 +143,7 @@ const WellnessTools = () => {
                 }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
                 onClick={() => {
-                  if (tool.isExternal && tool.externalUrl) {
-                    window.open(tool.externalUrl, '_blank');
-                  } else {
-                    setActiveTool(tool.id as ToolType);
-                  }
+                  setActiveTool(tool.id as ToolType);
                 }}
                 className={`group relative p-10 bg-white/70 backdrop-blur-xl rounded-[40px] border border-ocean-aqua/20 shadow-xl ${tool.hoverShadow} hover:shadow-2xl transition-all duration-500 text-left overflow-hidden`}
               >

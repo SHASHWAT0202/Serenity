@@ -1,6 +1,10 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Bot } from 'lucide-react';
+import { MessageCircle, X, Bot, Phone } from 'lucide-react';
+import { VapiClient } from '@vapi-ai/server-sdk';
+console.log(import.meta.env.VITE_VAPI_API_KEY);
+const vapi = new VapiClient({ token: import.meta.env.VITE_VAPI_API_KEY! });
+
 
 interface FloatingAITherapistProps {
   onOpenFullChat: () => void;
@@ -27,6 +31,13 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMinimized]);
+
+async function startCall() {
+  const call = await vapi.calls.create({ assistantId: 'ce5fe09a-ff18-4c58-be57-382879dac614' ,
+  phoneNumberId: 'f3cf295d-4d54-4709-b5a8-d6e9172ae236',
+  customer: { number: '+919794177498' },
+});
+console.log(call.id);}
 
   return (
     <>
@@ -80,21 +91,24 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
             <p className="text-sm text-gray-600 mb-4">
               I'm here to provide a safe space for your thoughts and feelings.
             </p>
-            <button
-              onClick={() => {
-                setIsMinimized(true);
-                onOpenFullChat();
-              }}
-              className="bg-gradient-to-r from-serenity-500 to-lavender-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300"
-            >
-              Start Conversation
-            </button>
-            <a
-              href="/voice-assist.html"
-              className="ml-3 inline-block bg-white border border-gray-200 text-serenity-700 px-4 py-3 rounded-full text-sm font-semibold hover:shadow transition-all duration-300"
-            >
-              Voice Assist
-            </a>
+            <div className="flex flex-col gap-3 w-full px-4">
+              <button
+                onClick={() => {
+                  setIsMinimized(true);
+                  onOpenFullChat();
+                }}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full"
+              >
+                💬 Start Text Chat
+              </button>
+              <button
+                onClick={startCall}
+                className="group bg-white border-2 border-purple-300 hover:border-purple-500 text-purple-600 px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 w-full flex items-center justify-center gap-2"
+              >
+                <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                Start Voice Call
+              </button>
+            </div>
           </div>
         </div>
       )}

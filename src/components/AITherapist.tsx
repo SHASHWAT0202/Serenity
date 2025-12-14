@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, MicOff, AlertTriangle, Heart, Bot, User, Sparkles, Shield, Clock } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import OpenAI from 'openai';
+import VapiWidget from './ui/vapiWidget';
 
 // Minimal Web Speech types to avoid `any`
 interface RecognitionResultEvent {
@@ -608,7 +609,7 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity foll
                       <Send className="w-5 h-5" />
                     </button>
                     
-                    <button 
+                    {/* <button 
                       onClick={toggleVoiceInput}
                       className={`p-4 rounded-2xl hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white shadow-lg ${
                         isListening 
@@ -619,7 +620,8 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity foll
                       title={speechSupported ? (isListening ? 'Stop recording' : 'Start voice input') : 'Voice input not supported'}
                     >
                       {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                    </button>
+                    </button> */}
+                    <VapiWidget apiKey='4090f4c6-7d97-4f23-b113-25668300bce2' assistantId='ce5fe09a-ff18-4c58-be57-382879dac614' /> 
                   </div>
                 </div>
                 

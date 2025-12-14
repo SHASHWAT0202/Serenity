@@ -20,7 +20,8 @@ const WellnessTools = () => {
       description: 'Understand your current state with a comprehensive, science-backed assessment',
       icon: <Brain size={32} />,
       gradient: 'from-ocean-primary to-ocean-aqua',
-      hoverShadow: 'hover:shadow-ocean-primary/20'
+      hoverShadow: 'hover:shadow-ocean-primary/20',
+      isExternal: false
     },
     {
       id: 'mood-detection',
@@ -28,7 +29,9 @@ const WellnessTools = () => {
       description: 'Discover your emotional state through advanced facial expression analysis',
       icon: <Activity size={32} />,
       gradient: 'from-purple-500 to-pink-500',
-      hoverShadow: 'hover:shadow-purple-500/20'
+      hoverShadow: 'hover:shadow-purple-500/20',
+      isExternal: true,
+      externalUrl: 'https://serenityface.vercel.app/'
     },
     {
       id: 'yoga',
@@ -36,7 +39,8 @@ const WellnessTools = () => {
       description: 'Guided poses and breathing exercises for inner calm and balance',
       icon: <Heart size={32} />,
       gradient: 'from-mint-500 to-emerald-500',
-      hoverShadow: 'hover:shadow-mint-500/20'
+      hoverShadow: 'hover:shadow-mint-500/20',
+      isExternal: false
     },
     {
       id: 'medicine',
@@ -44,7 +48,8 @@ const WellnessTools = () => {
       description: 'Natural remedies and supplements to support your mental wellness journey',
       icon: <Pill size={32} />,
       gradient: 'from-lavender-500 to-violet-500',
-      hoverShadow: 'hover:shadow-lavender-500/20'
+      hoverShadow: 'hover:shadow-lavender-500/20',
+      isExternal: false
     },
     {
       id: 'videos',
@@ -52,7 +57,8 @@ const WellnessTools = () => {
       description: 'Curated meditation, mindfulness, and educational content',
       icon: <Video size={32} />,
       gradient: 'from-orange-400 to-rose-500',
-      hoverShadow: 'hover:shadow-orange-500/20'
+      hoverShadow: 'hover:shadow-orange-500/20',
+      isExternal: false
     }
   ];
 
@@ -137,7 +143,13 @@ const WellnessTools = () => {
                   ease: [0.16, 1, 0.3, 1]
                 }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                onClick={() => setActiveTool(tool.id as ToolType)}
+                onClick={() => {
+                  if (tool.isExternal && tool.externalUrl) {
+                    window.open(tool.externalUrl, '_blank');
+                  } else {
+                    setActiveTool(tool.id as ToolType);
+                  }
+                }}
                 className={`group relative p-10 bg-white/70 backdrop-blur-xl rounded-[40px] border border-ocean-aqua/20 shadow-xl ${tool.hoverShadow} hover:shadow-2xl transition-all duration-500 text-left overflow-hidden`}
               >
                 {/* Gradient glow on hover */}

@@ -7,6 +7,7 @@ import AnimatedAvatar from './AnimatedAvatar';
 import ParticleField from './ParticleField';
 import VoiceWaveform from './VoiceWaveform';
 import ThoughtBubble from './ThoughtBubble';
+import VapiWidget from './ui/vapiWidget';
 
 interface RecognitionResultEvent {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -360,7 +361,7 @@ const AITherapistImmersive = () => {
                   <Send className="w-5 h-5" />
                 </motion.button>
                 
-                {speechSupported && (
+                {/* {speechSupported && (
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -371,7 +372,9 @@ const AITherapistImmersive = () => {
                   >
                     {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                   </motion.button>
-                )}
+                )} */}
+                <VapiWidget apiKey='4090f4c6-7d97-4f23-b113-25668300bce2' assistantId='ce5fe09a-ff18-4c58-be57-382879dac614' /> 
+      
               </div>
             </div>
           </div>

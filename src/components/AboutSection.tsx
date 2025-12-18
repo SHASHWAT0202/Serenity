@@ -63,36 +63,7 @@ const AboutSection = () => {
       ],
       funFact: 'Turns wireframes into art faster than you can say “Figma”.'
     },
-    {
-      id: '4',
-      name: 'Swayam Agarwal',
-      role: 'AI Lead',
-      photo: '/images/team/swayam.jpg',
-      emoji: '🤖',
-      quote: "AI isn’t just about models — it’s about making them work for people.",
-      expertise: [
-        'AI Strategy & Model Selection',
-        'Serenity, Smart Soil, Study Buddy AI Features',
-        'Accuracy & Scalability Optimization',
-        'Deployment & Maintenance'
-      ],
-      funFact: 'Loves debugging ML pipelines almost as much as building them.'
-    },
-    {
-      id: '5',
-      name: 'Divyansh Srivastava',
-      role: 'AI/ML Engineer',
-      photo: '/images/team/divyansh.jpg',
-      emoji: '📊',
-      quote: "Good models are trained, great models are refined endlessly.",
-      expertise: [
-        'Machine Learning Model Development',
-        'Model Optimization & Accuracy Improvement',
-        'Collaborating with AI Lead',
-        'Deployment Strategies'
-      ],
-      funFact: 'Can explain backpropagation using food metaphors.'
-    }
+
   ];
   const companyValues = [
     {

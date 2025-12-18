@@ -23,9 +23,9 @@ const Footer = () => {
   ];
 
   const crisisResources = [
-    { name: '988 Suicide & Crisis Lifeline', number: '988', country: 'US' },
-    { name: 'Crisis Text Line', number: 'Text HOME to 741741', country: 'US' },
-    { name: 'International Association for Suicide Prevention', number: 'iasp.info', country: 'Global' }
+    { name: 'KIRAN Mental Health Helpline', number: '1800-599-0019', country: 'India' },
+    { name: 'AASRA Helpline', number: '9820466726', country: 'India' },
+    { name: 'Vandrevala Foundation Helpline', number: '1860-2662-345', country: 'India' }
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -41,7 +41,7 @@ const Footer = () => {
       <div className="bg-red-600 py-4">
         <div className="container mx-auto px-4 text-center">
           <p className="font-semibold text-sm md:text-base">
-            🆘 In Crisis? You're not alone. Call 988 (US) or your local emergency services. Help is available 24/7.
+            🆘 In Crisis? You're not alone. Call KIRAN 1800-599-0019 (India) 24/7 or your local emergency services. Help is available.
           </p>
         </div>
       </div>

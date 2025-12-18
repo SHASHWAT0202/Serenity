@@ -338,7 +338,7 @@ const MentalHealthQuiz = () => {
       overallCategory = "Severe Mental Health Concerns - Immediate Support Needed";
       description = "Your responses indicate significant mental health challenges that require immediate professional attention. Please reach out for help - you deserve support and care.";
       recommendations = [
-        "Contact a mental health crisis line immediately (988 in US)",
+        "Contact a mental health crisis line immediately (KIRAN 1800-599-0019 in India)",
         "Go to your nearest emergency room if having thoughts of self-harm",
         "Contact your doctor or a mental health professional today",
         "Reach out to trusted family or friends for immediate support",
@@ -647,8 +647,8 @@ Generated on: ${new Date().toLocaleString()}
               </div>
               <p className="text-red-700 mb-4">Your responses indicate you may be having thoughts of self-harm. Please reach out for immediate support:</p>
               <div className="flex flex-wrap gap-3">
-                <a href="tel:988" className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors">
-                  📞 Call 988 (Crisis Lifeline)
+                <a href="tel:18005990019" className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors">
+                  📞 Call KIRAN Helpline (1800-599-0019)
                 </a>
                 <a href="sms:741741" className="bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors">
                   💬 Text HOME to 741741

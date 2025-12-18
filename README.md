@@ -290,12 +290,13 @@ git push origin feature/amazing-feature
 ## 🆘 **Mental Health Resources**
 
 **🚨 Crisis Support:**
-- **National Suicide Prevention Lifeline**: 988
+- **KIRAN Mental Health Helpline (India)**: 1800-599-0019
 - **Crisis Text Line**: Text HOME to 741741
 - **International Association for Suicide Prevention**: [iasp.info](https://iasp.info)
 
 **📞 Additional Support:**
-- **NAMI (National Alliance on Mental Illness)**: 1-800-950-NAMI
+- **AASRA Helpline (India)**: 9820466726
+- **Vandrevala Foundation Helpline (India)**: 1860-2662-345
 - **Mental Health America**: [mhanational.org](https://mhanational.org)
 
 ---

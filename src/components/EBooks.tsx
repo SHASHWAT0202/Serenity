@@ -16,7 +16,7 @@ const BOOKS = [
     title: "Better Sleep, Better Mood",
     author: "Serenity Team",
     description: "Improve your sleep hygiene with simple, actionable steps that support mental health.",
-    cover: "https://images.unsplash.com/photo-1507133750040-4a8f5702155b?w=800&q=80&auto=format&fit=crop",
+    cover: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&q=80&auto=format&fit=crop",
     link: "https://www.sleepfoundation.org/sleep-hygiene",
     tag: "Sleep",
   },

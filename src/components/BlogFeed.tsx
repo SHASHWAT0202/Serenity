@@ -48,8 +48,10 @@ const BlogFeed = () => {
   const articles = data ?? [];
 
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 bg-gradient-to-br from-lavender-50/40 via-pink-50/20 to-ocean-mist/30 overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-100/10 to-transparent pointer-events-none" />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h2 className="text-2xl font-bold">Latest Blogs</h2>
           <div className="flex items-center gap-2">

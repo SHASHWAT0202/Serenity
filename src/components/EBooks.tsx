@@ -33,8 +33,10 @@ const BOOKS = [
 
 const EBooks = () => {
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 bg-gradient-to-br from-pink-50/30 via-lavender-50/20 to-ocean-light/40 overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/30 to-transparent pointer-events-none" />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex items-center gap-2 mb-6">
           <BookOpen className="text-serenity-600" />
           <h2 className="text-2xl font-bold">E-Books for Calmness & Mental Health</h2>

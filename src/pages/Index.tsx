@@ -40,7 +40,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-ocean-light via-purple-50/20 to-pink-50/20">
       <Header />
       <HeroSection />
       

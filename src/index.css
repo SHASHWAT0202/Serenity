@@ -84,8 +84,9 @@
   }
 
   body {
-    @apply bg-serenity-gradient text-foreground;
+    @apply bg-gradient-to-br from-ocean-light via-purple-50/20 to-pink-50/20 text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-attachment: fixed;
   }
 
   html {
@@ -132,6 +133,32 @@
   
   .ocean-glow {
     box-shadow: 0 0 60px rgba(50, 107, 112, 0.3);
+  }
+  
+  /* Seamless Section Blending */
+  section {
+    position: relative;
+  }
+  
+  section::before,
+  section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  section::before {
+    top: 0;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.01));
+  }
+  
+  section::after {
+    bottom: 0;
+    background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.01));
   }
   
   /* Legacy */

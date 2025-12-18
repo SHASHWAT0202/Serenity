@@ -247,8 +247,10 @@ const MoodMusicRecommender = () => {
   };
 
   return (
-    <section id="mood-music" className="py-20 px-4 bg-gradient-to-br from-lavender-50 to-mint-50">
-      <div className="container mx-auto max-w-6xl">
+    <section id="mood-music" className="relative py-20 px-4 bg-gradient-to-br from-ocean-mist/50 via-lavender-50/30 to-mint-50/40 overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ocean-aqua/5 to-transparent pointer-events-none" />
+      <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center mb-12">
           <div className="w-16 h-16 bg-gradient-to-br from-lavender-500 to-mint-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-breathing">
             <Music className="text-white" size={24} />

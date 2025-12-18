@@ -82,9 +82,11 @@ const InspiringStories = () => {
   return (
     <section
       id="inspiring-stories"
-      className="py-20 px-4 bg-gradient-to-br from-serenity-50 to-mint-50"
+      className="relative py-20 px-4 bg-gradient-to-br from-pink-50/40 via-lavender-50/30 to-ocean-light/40 overflow-hidden"
     >
-      <div className="container mx-auto max-w-6xl">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-50/20 to-transparent pointer-events-none" />
+      <div className="container mx-auto max-w-5xl relative z-10">
         <div className="text-center mb-14">
           <div className="w-16 h-16 bg-gradient-to-br from-serenity-500 to-mint-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-breathing">
             <Sparkles className="text-white" size={24} />

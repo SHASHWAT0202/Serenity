@@ -147,8 +147,10 @@ const ConnectDoctor = () => {
   ];
 
   return (
-    <section id="connect-doctor" className="py-20 px-4 bg-gradient-to-br from-purple-50 to-pink-50">
-      <div className="container mx-auto max-w-6xl">
+    <section id="connect-doctor" className="relative py-20 px-4 bg-gradient-to-br from-purple-50/40 via-pink-50/30 to-lavender-50/30 overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-pink-100/10 to-transparent pointer-events-none" />
+      <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center mb-12">
           <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-breathing">
             <Video className="text-white" size={24} />

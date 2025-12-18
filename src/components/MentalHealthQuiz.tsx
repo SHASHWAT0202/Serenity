@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, ChevronRight, Brain, AlertCircle, Heart, Star, TrendingUp, Calendar, Download, BarChart3, Shield, Clock, Users, Zap } from 'lucide-react';
+import { CheckCircle, ChevronRight, Brain, AlertCircle, Heart, Star, TrendingUp, Calendar, Download, BarChart3, Shield, Clock, Users, Zap, Activity, Target, Award, BookOpen, Sparkles } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Question {
   id: number;
@@ -63,12 +64,12 @@ const MentalHealthQuiz = () => {
   }, []);
 
   const questions: Question[] = [
-    // Depression (PHQ-9 inspired)
+    // Depression (PHQ-9 inspired) - Questions 1-4
     {
       id: 1,
       text: "Over the past two weeks, how often have you felt down, depressed, or hopeless?",
       category: 'depression',
-      weight: 1.2,
+      weight: 1.0,
       options: [
         { text: "Not at all", score: 0 },
         { text: "Several days", score: 1 },
@@ -80,7 +81,7 @@ const MentalHealthQuiz = () => {
       id: 2,
       text: "How often have you had little interest or pleasure in doing things?",
       category: 'depression',
-      weight: 1.2,
+      weight: 1.0,
       options: [
         { text: "Not at all", score: 0 },
         { text: "Several days", score: 1 },
@@ -104,21 +105,21 @@ const MentalHealthQuiz = () => {
       id: 4,
       text: "How often have you had thoughts that you would be better off dead or hurting yourself?",
       category: 'depression',
-      weight: 2.0, // Highest weight for safety
+      weight: 1.0,
       options: [
         { text: "Not at all", score: 0 },
-        { text: "Several days", score: 2 },
-        { text: "More than half the days", score: 4 },
-        { text: "Nearly every day", score: 6 }
+        { text: "Several days", score: 1 },
+        { text: "More than half the days", score: 2 },
+        { text: "Nearly every day", score: 3 }
       ]
     },
     
-    // Anxiety (GAD-7 inspired)
+    // Anxiety (GAD-7 inspired) - Questions 5-7
     {
       id: 5,
       text: "Over the past two weeks, how often have you felt nervous, anxious, or on edge?",
       category: 'anxiety',
-      weight: 1.2,
+      weight: 1.0,
       options: [
         { text: "Not at all", score: 0 },
         { text: "Several days", score: 1 },
@@ -130,7 +131,7 @@ const MentalHealthQuiz = () => {
       id: 6,
       text: "How often have you not been able to stop or control worrying?",
       category: 'anxiety',
-      weight: 1.1,
+      weight: 1.0,
       options: [
         { text: "Not at all", score: 0 },
         { text: "Several days", score: 1 },
@@ -273,8 +274,8 @@ const MentalHealthQuiz = () => {
   const calculateCategoryScores = (answers: number[]): CategoryScore[] => {
     const categories = ['depression', 'anxiety', 'stress', 'sleep', 'social', 'lifestyle', 'cognitive', 'physical'];
     const categoryData: { [key: string]: { score: number; maxScore: number; label: string; color: string } } = {
-      depression: { score: 0, maxScore: 0, label: 'Depression', color: 'text-blue-600' },
-      anxiety: { score: 0, maxScore: 0, label: 'Anxiety', color: 'text-orange-600' },
+      depression: { score: 0, maxScore: 0, label: 'Depression (PHQ-9)', color: 'text-blue-600' },
+      anxiety: { score: 0, maxScore: 0, label: 'Anxiety (GAD-7)', color: 'text-orange-600' },
       stress: { score: 0, maxScore: 0, label: 'Stress', color: 'text-red-600' },
       sleep: { score: 0, maxScore: 0, label: 'Sleep Quality', color: 'text-purple-600' },
       social: { score: 0, maxScore: 0, label: 'Social Connection', color: 'text-green-600' },
@@ -283,47 +284,107 @@ const MentalHealthQuiz = () => {
       physical: { score: 0, maxScore: 0, label: 'Physical Health', color: 'text-pink-600' }
     };
 
+    // Calculate raw scores (no weighting - direct PHQ-9/GAD-7 scoring)
     questions.forEach((question, index) => {
       if (answers[index] !== undefined) {
-        const weightedScore = answers[index] * question.weight;
-        const maxWeightedScore = Math.max(...question.options.map(opt => opt.score)) * question.weight;
+        const answerScore = answers[index];
+        const maxScore = Math.max(...question.options.map(opt => opt.score));
         
-        categoryData[question.category].score += weightedScore;
-        categoryData[question.category].maxScore += maxWeightedScore;
+        categoryData[question.category].score += answerScore;
+        categoryData[question.category].maxScore += maxScore;
       }
     });
 
     return categories
       .filter(cat => categoryData[cat].maxScore > 0)
-      .map(category => ({
-        category,
-        score: categoryData[category].score,
-        maxScore: categoryData[category].maxScore,
-        percentage: (categoryData[category].score / categoryData[category].maxScore) * 100,
-        label: categoryData[category].label,
-        color: categoryData[category].color
-      }));
+      .map(category => {
+        const score = categoryData[category].score;
+        const maxScore = categoryData[category].maxScore;
+        let percentage = 0;
+        
+        // Use validated clinical cut-offs for PHQ-9 and GAD-7
+        if (category === 'depression') {
+          // PHQ-9 scoring: 0-4 minimal, 5-9 mild, 10-14 moderate, 15-19 moderately severe, 20-27 severe
+          // Max score is 12 for 4 questions (normally 27 for full PHQ-9)
+          percentage = (score / 12) * 100; // 4 questions * 3 max each = 12
+        } else if (category === 'anxiety') {
+          // GAD-7 scoring: 0-4 minimal, 5-9 mild, 10-14 moderate, 15-21 severe
+          // Max score is 9 for 3 questions (normally 21 for full GAD-7)
+          percentage = (score / 9) * 100; // 3 questions * 3 max each = 9
+        } else {
+          // For other categories, use standard percentage
+          percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
+        }
+        
+        return {
+          category,
+          score,
+          maxScore,
+          percentage: Math.min(percentage, 100), // Cap at 100%
+          label: categoryData[category].label,
+          color: categoryData[category].color
+        };
+      });
   };
 
   const calculateResult = (answers: number[]): QuizResult => {
     const categoryScores = calculateCategoryScores(answers);
     
-    // Calculate weighted total score
-    let totalScore = 0;
-    let maxTotalScore = 0;
+    // Calculate PHQ-9 and GAD-7 scores properly
+    let depressionScore = 0;
+    let anxietyScore = 0;
+    let otherScores = 0;
+    let otherMaxScores = 0;
     
     questions.forEach((question, index) => {
       if (answers[index] !== undefined) {
-        totalScore += answers[index] * question.weight;
-        maxTotalScore += Math.max(...question.options.map(opt => opt.score)) * question.weight;
+        const answerScore = answers[index];
+        
+        if (question.category === 'depression') {
+          depressionScore += answerScore;
+        } else if (question.category === 'anxiety') {
+          anxietyScore += answerScore;
+        } else {
+          otherScores += answerScore;
+          otherMaxScores += Math.max(...question.options.map(opt => opt.score));
+        }
       }
     });
 
-    const percentage = (totalScore / maxTotalScore) * 100;
+    // Calculate overall percentage using clinical severity
+    // Depression: 4 questions, max 12 points
+    // Anxiety: 3 questions, max 9 points
+    // Others: variable
     
-    // Check for high-risk indicators
-    const suicidalThoughtsScore = answers[3] || 0; // Question 4 (suicidal thoughts)
-    const emergencyContact = suicidalThoughtsScore >= 2;
+    const depressionPercentage = (depressionScore / 12) * 100; // 4 questions * 3 = 12
+    const anxietyPercentage = (anxietyScore / 9) * 100; // 3 questions * 3 = 9
+    const otherPercentage = otherMaxScores > 0 ? (otherScores / otherMaxScores) * 100 : 0;
+    
+    // Weighted average giving more importance to depression and anxiety
+    const totalQuestions = questions.length;
+    const depressionWeight = 4 / totalQuestions; // 4 depression questions
+    const anxietyWeight = 3 / totalQuestions; // 3 anxiety questions
+    const otherWeight = (totalQuestions - 7) / totalQuestions; // remaining questions
+    
+    const percentage = (
+      depressionPercentage * depressionWeight +
+      anxietyPercentage * anxietyWeight +
+      otherPercentage * otherWeight
+    );
+    
+    // Calculate total score for display
+    let totalScore = 0;
+    let maxTotalScore = 0;
+    questions.forEach((question, index) => {
+      if (answers[index] !== undefined) {
+        totalScore += answers[index];
+        maxTotalScore += Math.max(...question.options.map(opt => opt.score));
+      }
+    });
+    
+    // Check for high-risk indicators using proper PHQ-9 criteria
+    const suicidalThoughtsScore = answers[3] || 0; // Question 4 (suicidal ideation)
+    const emergencyContact = suicidalThoughtsScore >= 1; // ANY suicidal ideation is concerning
 
     let riskLevel: 'low' | 'mild' | 'moderate' | 'high' | 'severe';
     let overallCategory: string;
@@ -333,72 +394,76 @@ const MentalHealthQuiz = () => {
     let icon: React.ReactNode;
     let followUpDays: number;
 
-    if (emergencyContact || percentage >= 80) {
+    // Use validated PHQ-9 + GAD-7 severity ranges
+    // Depression (4 questions): 0-1 minimal, 2-4 mild, 5-7 moderate, 8-9 moderately severe, 10-12 severe
+    // Anxiety (3 questions): 0-1 minimal, 2-3 mild, 4-5 moderate, 6-9 severe
+    
+    if (emergencyContact) {
       riskLevel = 'severe';
-      overallCategory = "Severe Mental Health Concerns - Immediate Support Needed";
-      description = "Your responses indicate significant mental health challenges that require immediate professional attention. Please reach out for help - you deserve support and care.";
+      overallCategory = "⚠️ Critical - Immediate Support Needed";
+      description = "Your responses indicate thoughts of self-harm. This is a medical emergency. Please reach out for immediate professional help - you deserve support and care right now.";
       recommendations = [
-        "Contact a mental health crisis line immediately (KIRAN 1800-599-0019 in India)",
-        "Go to your nearest emergency room if having thoughts of self-harm",
-        "Contact your doctor or a mental health professional today",
-        "Reach out to trusted family or friends for immediate support",
-        "Consider intensive outpatient or inpatient treatment options"
+        "🆘 Call emergency services (911) or crisis helpline immediately (KIRAN 1800-599-0019)",
+        "Go to your nearest emergency room if having active thoughts of self-harm",
+        "Contact your doctor or mental health professional today",
+        "Reach out to a trusted family member or friend right now",
+        "Do not stay alone - ensure you have immediate support"
       ];
       color = "text-red-700";
-      icon = <AlertCircle className="text-red-700" size={28} />;
-      followUpDays = 1;
-    } else if (percentage >= 65) {
-      riskLevel = 'high';
-      overallCategory = "High Mental Health Concerns";
-      description = "You're experiencing significant mental health challenges that would benefit greatly from professional support and comprehensive care strategies.";
+      icon = <AlertCircle className="text-red-700" size={32} />;
+      followUpDays = 0; // Immediate
+    } else if (depressionScore >= 8 || anxietyScore >= 6 || percentage >= 70) {
+      riskLevel = 'severe';
+      overallCategory = "Severe Symptoms Detected";
+      description = "Your responses indicate severe symptoms that require professional attention. Please consult with a mental health provider as soon as possible.";
       recommendations = [
-        "Schedule an appointment with a mental health professional within the week",
-        "Consider therapy (CBT, DBT, or other evidence-based approaches)",
-        "Discuss medication options with a psychiatrist if appropriate",
-        "Create a daily structure and routine for stability",
-        "Build a strong support network and use it regularly"
+        "Schedule an appointment with a psychiatrist or psychologist this week",
+        "Consider intensive outpatient therapy or support programs",
+        "Discuss medication options with a healthcare provider",
+        "Create a crisis safety plan with professional guidance",
+        "Build a strong daily support network"
       ];
       color = "text-red-600";
-      icon = <AlertCircle className="text-red-600" size={26} />;
+      icon = <AlertCircle className="text-red-600" size={28} />;
       followUpDays = 3;
-    } else if (percentage >= 45) {
-      riskLevel = 'moderate';
-      overallCategory = "Moderate Mental Health Concerns";
-      description = "You're facing some significant mental health challenges. Professional support combined with self-care strategies can help you feel better.";
+    } else if (depressionScore >= 5 || anxietyScore >= 4 || percentage >= 50) {
+      riskLevel = 'high';
+      overallCategory = "Moderate to Moderately Severe Symptoms";
+      description = "Your responses show significant symptoms that would benefit from professional support and therapeutic interventions.";
       recommendations = [
-        "Consider scheduling a consultation with a therapist or counselor",
-        "Practice daily stress-reduction techniques (meditation, deep breathing)",
+        "Schedule an appointment with a mental health professional within 1-2 weeks",
+        "Consider evidence-based therapy (CBT, DBT, or ACT)",
         "Maintain regular sleep schedule and healthy lifestyle habits",
-        "Stay connected with supportive friends and family",
-        "Monitor your symptoms and seek help if they worsen"
+        "Practice daily stress-reduction techniques",
+        "Stay connected with supportive relationships"
       ];
       color = "text-orange-600";
-      icon = <Brain className="text-orange-600" size={24} />;
+      icon = <AlertCircle className="text-orange-600" size={26} />;
       followUpDays = 7;
-    } else if (percentage >= 25) {
-      riskLevel = 'mild';
-      overallCategory = "Mild Mental Health Concerns";
-      description = "You're experiencing some mental health challenges that are manageable with the right strategies and occasional support.";
+    } else if (depressionScore >= 2 || anxietyScore >= 2 || percentage >= 25) {
+      riskLevel = 'moderate';
+      overallCategory = "Mild Symptoms Present";
+      description = "You're experiencing some symptoms that are worth addressing. Self-care strategies and possibly professional support can help you feel better.";
       recommendations = [
-        "Practice regular self-care and stress management techniques",
+        "Consider consulting with a therapist or counselor",
+        "Practice regular self-care and stress management",
         "Maintain healthy lifestyle habits (exercise, nutrition, sleep)",
-        "Stay socially connected and engage in meaningful activities",
-        "Consider preventive counseling or support groups",
-        "Monitor your mental health and seek help if symptoms increase"
+        "Stay socially connected with friends and family",
+        "Monitor your symptoms and seek help if they worsen"
       ];
       color = "text-yellow-600";
       icon = <Heart className="text-yellow-600" size={24} />;
       followUpDays = 14;
     } else {
       riskLevel = 'low';
-      overallCategory = "Excellent Mental Wellness";
-      description = "You're doing very well mentally and emotionally! Your responses suggest strong mental health with effective coping strategies and good life balance.";
+      overallCategory = "Minimal Symptoms - Good Mental Health";
+      description = "Your responses suggest minimal symptoms and good overall mental health. Continue your positive practices!";
       recommendations = [
         "Continue your current positive mental health practices",
-        "Maintain regular exercise, healthy nutrition, and good sleep habits",
-        "Keep nurturing your social relationships and support network",
-        "Consider sharing your wellness strategies to help others",
-        "Stay vigilant for any changes in your mental health"
+        "Maintain regular exercise, healthy nutrition, and good sleep",
+        "Keep nurturing your social relationships",
+        "Practice stress management techniques proactively",
+        "Consider this a good time to build resilience for future challenges"
       ];
       color = "text-green-600";
       icon = <Star className="text-green-600" size={24} />;
@@ -408,7 +473,7 @@ const MentalHealthQuiz = () => {
     return {
       totalScore,
       maxTotalScore,
-      percentage,
+      percentage: Math.min(percentage, 100),
       overallCategory,
       description,
       recommendations,
@@ -625,398 +690,425 @@ Generated on: ${new Date().toLocaleString()}
 
   if (showResult && result) {
     return (
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="mb-4">{result.icon}</div>
-            <h3 className="text-3xl font-bold text-gray-800 mb-2">{result.overallCategory}</h3>
-            <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-4 mb-4">
-              <p className="text-2xl font-bold text-gray-800">Overall Score: {result.percentage.toFixed(1)}%</p>
-              <p className="text-sm text-gray-600">({result.totalScore.toFixed(1)} out of {result.maxTotalScore.toFixed(1)} points)</p>
-            </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">{result.description}</p>
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-gradient-to-br from-white to-blue-50/30 rounded-3xl shadow-2xl p-8 md:p-12 border border-blue-100"
+        >
+          {/* Header with Score Circle */}
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8, delay: 0.2 }}
+              className="flex justify-center mb-6"
+            >
+              <div className="relative">
+                {/* Animated Circle Progress */}
+                <svg className="w-48 h-48 transform -rotate-90">
+                  <circle
+                    cx="96"
+                    cy="96"
+                    r="88"
+                    stroke="currentColor"
+                    strokeWidth="12"
+                    fill="none"
+                    className="text-gray-200"
+                  />
+                  <motion.circle
+                    cx="96"
+                    cy="96"
+                    r="88"
+                    stroke="url(#gradient)"
+                    strokeWidth="12"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{ strokeDasharray: "0 552" }}
+                    animate={{ strokeDasharray: `${(result.percentage / 100) * 552} 552` }}
+                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                  />
+                  <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={result.riskLevel === 'severe' || result.riskLevel === 'high' ? '#dc2626' : result.riskLevel === 'moderate' ? '#ea580c' : result.riskLevel === 'mild' ? '#f59e0b' : '#10b981'} />
+                      <stop offset="100%" stopColor={result.riskLevel === 'severe' || result.riskLevel === 'high' ? '#ef4444' : result.riskLevel === 'moderate' ? '#f97316' : result.riskLevel === 'mild' ? '#fbbf24' : '#34d399'} />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                
+                {/* Center Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    {result.icon}
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7 }}
+                    className="mt-2"
+                  >
+                    <div className="text-4xl font-bold text-gray-800">{result.percentage.toFixed(0)}%</div>
+                    <div className="text-sm text-gray-600 font-medium">Overall Score</div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">{result.overallCategory}</h3>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">{result.description}</p>
+            </motion.div>
           </div>
 
           {/* Emergency Alert */}
           {result.emergencyContact && (
-            <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-6 mb-8">
-              <div className="flex items-center space-x-2 mb-3">
-                <AlertCircle className="text-red-600" size={24} />
-                <h4 className="text-xl font-semibold text-red-800">Immediate Support Needed</h4>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500 rounded-2xl p-6 mb-8 shadow-lg"
+            >
+              <div className="flex items-center space-x-3 mb-3">
+                <AlertCircle className="text-red-600" size={28} />
+                <h4 className="text-2xl font-bold text-red-800">Immediate Support Needed</h4>
               </div>
-              <p className="text-red-700 mb-4">Your responses indicate you may be having thoughts of self-harm. Please reach out for immediate support:</p>
+              <p className="text-red-700 mb-4 text-lg">Your responses indicate you may be having thoughts of self-harm. Please reach out for immediate support:</p>
               <div className="flex flex-wrap gap-3">
-                <a href="tel:18005990019" className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors">
+                <a href="tel:18005990019" className="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 transition-all hover:scale-105 shadow-lg">
                   📞 Call KIRAN Helpline (1800-599-0019)
                 </a>
-                <a href="sms:741741" className="bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors">
+                <a href="sms:741741" className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all hover:scale-105 shadow-lg">
                   💬 Text HOME to 741741
                 </a>
               </div>
-            </div>
+            </motion.div>
           )}
 
-          {/* Category Breakdown */}
-          <div className="mb-8">
-            <h4 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Category Breakdown</h4>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {result.categoryScores.map((category, index) => (
-                <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-200">
-                  <h5 className={`font-semibold ${category.color} mb-2`}>{category.label}</h5>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-2xl font-bold text-gray-800">{category.percentage.toFixed(0)}%</span>
-                    <span className="text-sm text-gray-600">{category.score.toFixed(1)}/{category.maxScore.toFixed(1)}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className={`h-2 rounded-full ${category.color.replace('text-', 'bg-')}`}
-                      style={{ width: `${Math.min(category.percentage, 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
+          {/* PHQ-9 & GAD-7 Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-12"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h4 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                <BarChart3 className="text-blue-600" size={28} />
+                Mental Health Metrics
+              </h4>
+              <div className="text-sm text-gray-600 bg-white px-4 py-2 rounded-full border border-gray-200">
+                Based on PHQ-9 & GAD-7
+              </div>
             </div>
-          </div>
+
+            {/* Category Cards with Interactive Bars */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              {result.categoryScores.map((category, index) => {
+                const getColorClass = (percentage: number) => {
+                  if (percentage >= 75) return { bg: 'from-red-500 to-red-600', text: 'text-red-600', light: 'bg-red-50', border: 'border-red-200' };
+                  if (percentage >= 50) return { bg: 'from-orange-500 to-orange-600', text: 'text-orange-600', light: 'bg-orange-50', border: 'border-orange-200' };
+                  if (percentage >= 25) return { bg: 'from-yellow-500 to-yellow-600', text: 'text-yellow-600', light: 'bg-yellow-50', border: 'border-yellow-200' };
+                  return { bg: 'from-green-500 to-green-600', text: 'text-green-600', light: 'bg-green-50', border: 'border-green-200' };
+                };
+                const colors = getColorClass(category.percentage);
+                
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                    className={`${colors.light} ${colors.border} border-2 rounded-2xl p-5 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer`}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h5 className={`font-bold text-sm ${colors.text}`}>{category.label}</h5>
+                      <Activity className={colors.text} size={20} />
+                    </div>
+                    
+                    <div className="mb-3">
+                      <div className="flex items-end gap-1">
+                        <span className={`text-4xl font-bold ${colors.text}`}>{category.percentage.toFixed(0)}</span>
+                        <span className="text-xl text-gray-500 mb-1">%</span>
+                      </div>
+                      <span className="text-xs text-gray-600">{category.score.toFixed(1)} / {category.maxScore.toFixed(1)} points</span>
+                    </div>
+                    
+                    {/* Animated Progress Bar */}
+                    <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${Math.min(category.percentage, 100)}%` }}
+                        transition={{ duration: 1, delay: 0.6 + index * 0.1, ease: "easeOut" }}
+                        className={`h-3 rounded-full bg-gradient-to-r ${colors.bg} shadow-inner`}
+                      />
+                    </div>
+                    
+                    {/* Severity Label */}
+                    <div className="mt-2">
+                      <span className="text-xs font-semibold text-gray-700">
+                        {category.percentage >= 75 ? '🔴 High Concern' : 
+                         category.percentage >= 50 ? '🟠 Moderate' : 
+                         category.percentage >= 25 ? '🟡 Mild' : '🟢 Healthy'}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Detailed Score Comparison Chart */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <h5 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <Target className="text-purple-600" size={24} />
+                Detailed Category Analysis
+              </h5>
+              <div className="space-y-4">
+                {result.categoryScores.map((category, index) => {
+                  const getColorForPercentage = (percentage: number) => {
+                    if (percentage >= 75) return '#dc2626';
+                    if (percentage >= 50) return '#ea580c';
+                    if (percentage >= 25) return '#f59e0b';
+                    return '#10b981';
+                  };
+                  
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 + index * 0.1 }}
+                      className="group"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">{category.label}</span>
+                        <span className="text-sm text-gray-600">{category.percentage.toFixed(1)}%</span>
+                      </div>
+                      <div className="relative h-8 bg-gray-100 rounded-lg overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.min(category.percentage, 100)}%` }}
+                          transition={{ duration: 1.2, delay: 0.8 + index * 0.1, ease: "easeOut" }}
+                          className="h-full rounded-lg relative overflow-hidden"
+                          style={{ backgroundColor: getColorForPercentage(category.percentage) }}
+                        >
+                          {/* Shimmer effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                        </motion.div>
+                        {/* Percentage markers */}
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-1/4 border-r border-gray-300 h-full" />
+                          <div className="w-1/4 border-r border-gray-300 h-full" />
+                          <div className="w-1/4 border-r border-gray-300 h-full" />
+                          <div className="w-1/4 h-full" />
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
 
           {/* Recommendations and Actions */}
-          <div className="grid lg:grid-cols-2 gap-8 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6">
-              <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-                <CheckCircle className="text-green-500" size={24} />
-                <span>Recommended Actions</span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="grid lg:grid-cols-2 gap-6 mb-8"
+          >
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 shadow-lg border border-blue-100">
+              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <CheckCircle className="text-green-500" size={26} />
+                Personalized Recommendations
               </h4>
               <ul className="space-y-3">
                 {result.recommendations.map((rec, index) => (
-                  <li key={index} className="flex items-start space-x-2">
-                    <div className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-0.5 flex-shrink-0">
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 + index * 0.1 }}
+                    className="flex items-start gap-3 group"
+                  >
+                    <div className="w-7 h-7 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold mt-0.5 flex-shrink-0 shadow-md group-hover:scale-110 transition-transform">
                       {index + 1}
                     </div>
-                    <span className="text-gray-700">{rec}</span>
-                  </li>
+                    <span className="text-gray-700 leading-relaxed group-hover:text-gray-900 transition-colors">{rec}</span>
+                  </motion.li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6">
-              <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-                <Zap className="text-blue-500" size={24} />
-                <span>Available Resources</span>
+            <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl p-6 shadow-lg border border-green-100">
+              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Zap className="text-blue-500" size={26} />
+                Immediate Support Tools
               </h4>
               <div className="space-y-3">
-                <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border">
-                  <Users className="text-blue-500" size={20} />
-                  <div>
-                    <p className="font-medium text-gray-800">AI Therapy Chat</p>
-                    <p className="text-sm text-gray-600">24/7 supportive conversation</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border">
-                  <Heart className="text-pink-500" size={20} />
-                  <div>
-                    <p className="font-medium text-gray-800">Mood-based Music</p>
-                    <p className="text-sm text-gray-600">Therapeutic playlists</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border">
-                  <Brain className="text-purple-500" size={20} />
-                  <div>
-                    <p className="font-medium text-gray-800">Guided Meditation</p>
-                    <p className="text-sm text-gray-600">Mindfulness exercises</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border">
-                  <Calendar className="text-green-500" size={20} />
-                  <div>
-                    <p className="font-medium text-gray-800">Professional Directory</p>
-                    <p className="text-sm text-gray-600">Find local therapists</p>
-                  </div>
-                </div>
+                {[
+                  { icon: <Users className="text-blue-500" size={22} />, title: 'AI Therapy Chat', desc: '24/7 supportive conversation' },
+                  { icon: <Heart className="text-pink-500" size={22} />, title: 'Mood Music Therapy', desc: 'Therapeutic playlists' },
+                  { icon: <Brain className="text-purple-500" size={22} />, title: 'Guided Meditation', desc: 'Mindfulness exercises' },
+                  { icon: <Calendar className="text-green-500" size={22} />, title: 'Connect with Doctor', desc: 'Book professional consultation' }
+                ].map((resource, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 + index * 0.1 }}
+                    className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group"
+                  >
+                    <div className="flex-shrink-0 group-hover:scale-110 transition-transform">{resource.icon}</div>
+                    <div className="flex-grow">
+                      <p className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{resource.title}</p>
+                      <p className="text-sm text-gray-600">{resource.desc}</p>
+                    </div>
+                    <ChevronRight className="text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" size={20} />
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Follow-up and Export */}
-          <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 mb-8">
-            <h4 className="text-xl font-semibold text-gray-800 mb-4">Follow-up & Tracking</h4>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="text-center">
-                <Calendar className="mx-auto text-blue-500 mb-2" size={32} />
-                <p className="font-medium text-gray-800">Next Check-in</p>
-                <p className="text-sm text-gray-600">Recommended in {result.followUpDays} days</p>
-              </div>
-              <div className="text-center">
-                <TrendingUp className="mx-auto text-green-500 mb-2" size={32} />
-                <p className="font-medium text-gray-800">Progress Tracking</p>
-                <p className="text-sm text-gray-600">Monitor your mental health journey</p>
-              </div>
-              <div className="text-center">
-                <Download className="mx-auto text-purple-500 mb-2" size={32} />
-                <p className="font-medium text-gray-800">Export Results</p>
-                <p className="text-sm text-gray-600">Share with healthcare provider</p>
-              </div>
+          {/* Progress Tracking Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-2xl p-8 mb-8 shadow-lg border border-indigo-100"
+          >
+            <h4 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <TrendingUp className="text-indigo-600" size={28} />
+              Track Your Progress
+            </h4>
+            <div className="grid md:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.9 }}
+                className="bg-white rounded-xl p-6 text-center shadow-md hover:shadow-lg transition-all"
+              >
+                <Calendar className="mx-auto text-blue-600 mb-3" size={36} />
+                <p className="font-bold text-2xl text-gray-800 mb-1">{result.followUpDays} days</p>
+                <p className="text-sm text-gray-600">Recommended follow-up</p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.0 }}
+                className="bg-white rounded-xl p-6 text-center shadow-md hover:shadow-lg transition-all"
+              >
+                <Award className="mx-auto text-green-600 mb-3" size={36} />
+                <p className="font-bold text-2xl text-gray-800 mb-1">{history.length + 1}</p>
+                <p className="text-sm text-gray-600">Assessments completed</p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.1 }}
+                className="bg-white rounded-xl p-6 text-center shadow-md hover:shadow-lg transition-all"
+              >
+                <Sparkles className="mx-auto text-purple-600 mb-3" size={36} />
+                <p className="font-bold text-2xl text-gray-800 mb-1">{Math.round((new Date().getTime() - startTime.getTime()) / 60000)} min</p>
+                <p className="text-sm text-gray-600">Time invested in you</p>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0 }}
+            className="flex flex-wrap justify-center gap-4 mb-8"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={restartQuiz}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2"
             >
+              <Brain size={22} />
               Take Assessment Again
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => exportResults(result)}
-              className="border-2 border-purple-400 text-purple-700 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-all duration-300 flex items-center space-x-2"
+              className="border-2 border-purple-400 bg-white text-purple-700 px-10 py-4 rounded-full font-bold text-lg hover:bg-purple-50 hover:shadow-lg transition-all duration-300 flex items-center gap-2"
             >
-              <Download size={20} />
-              <span>Export Results</span>
-            </button>
-            <button
-              onClick={(event) => {
-                if (user) {
-                  // User is logged in, scroll to AI therapist
-                  console.log('User is logged in, scrolling to AI therapist...');
-                  
-                  // Add visual feedback
-                  const button = event.target as HTMLButtonElement;
-                  if (button) {
-                    button.textContent = 'Scrolling...';
-                    button.disabled = true;
-                  }
-                  
-                  const scrollToAITherapist = () => {
-                    // Try multiple ways to find the element
-                    let element = document.getElementById('ai-therapist');
-                    
-                    // If not found by ID, try to find by other means
-                    if (!element) {
-                      // Try to find by class or content
-                      const allDivs = document.querySelectorAll('div');
-                      for (const div of allDivs) {
-                        if (div.textContent?.includes('AI Companion') || div.textContent?.includes('Serenity AI')) {
-                          element = div;
-                          console.log('Found AI therapist element by content:', div);
-                          break;
-                        }
-                      }
-                    }
-                    
-                    if (element) {
-                      // Check if element is actually visible and in the DOM
-                      const rect = element.getBoundingClientRect();
-                      const isVisible = rect.width > 0 && rect.height > 0;
-                      
-                      // Debug element position and scrollability
-                      console.log('Element details:', {
-                        id: element.id,
-                        tagName: element.tagName,
-                        className: element.className,
-                        rect: rect,
-                        isVisible: isVisible,
-                        offsetTop: element.offsetTop,
-                        scrollTop: element.scrollTop,
-                        parentScrollTop: element.parentElement?.scrollTop
-                      });
-                      
-                      if (!isVisible) {
-                        console.log('Element exists but not visible, waiting...');
-                        return false;
-                      }
-                      
-                      console.log('Element found and visible, scrolling...');
-                      
-                      // Try multiple scroll methods for better compatibility
-                      try {
-                        // Method 1: scrollIntoView with smooth behavior
-                        element.scrollIntoView({ 
-                          behavior: 'smooth',
-                          block: 'start',
-                          inline: 'nearest'
-                        });
-                        return true;
-                      } catch (error) {
-                        console.log('Method 1 failed, trying alternative:', error);
-                        try {
-                          // Method 2: scrollTo with smooth behavior
-                          const scrollTop = window.pageYOffset + rect.top - 100;
-                          window.scrollTo({
-                            top: scrollTop,
-                            behavior: 'smooth'
-                          });
-                          return true;
-                        } catch (error2) {
-                          console.log('Method 2 failed, using instant scroll:', error2);
-                          // Method 3: Instant scroll as fallback
-                          element.scrollIntoView();
-                          return true;
-                        }
-                      }
-                    } else {
-                      console.log('AI therapist element not found by any method');
-                      return false;
-                    }
-                  };
-                  
-                  // Try scrolling with multiple attempts
-                  let scrollSuccess = false;
-                  let attempts = 0;
-                  const maxAttempts = 5;
-                  
-                  // First, check if the page is ready
-                  let pageReadyAttempts = 0;
-                  const maxPageReadyAttempts = 20; // 10 seconds max
-                  
-                  const checkPageReady = () => {
-                    pageReadyAttempts++;
-                    const element = document.getElementById('ai-therapist');
-                    if (element) {
-                      console.log('Page is ready, starting scroll attempts');
-                      attemptScroll();
-                    } else if (pageReadyAttempts < maxPageReadyAttempts) {
-                      console.log(`Page not ready yet, waiting... (${pageReadyAttempts}/${maxPageReadyAttempts})`);
-                      setTimeout(checkPageReady, 500);
-                    } else {
-                      console.log('Page never became ready, giving up');
-                      if (button) {
-                        button.textContent = 'Scroll Failed - Click to Try Again';
-                        button.disabled = false;
-                      }
-                    }
-                  };
-                  
-                  const attemptScroll = () => {
-                    if (attempts >= maxAttempts) {
-                      console.log('Max scroll attempts reached, trying direct navigation');
-                      // Fallback: try to navigate to the AI therapist section directly
-                      try {
-                        const element = document.getElementById('ai-therapist');
-                        if (element) {
-                          // Force scroll to top of the element
-                          const offsetTop = element.offsetTop;
-                          window.scrollTo(0, offsetTop - 100);
-                          console.log('Direct navigation successful');
-                          if (button) {
-                            button.textContent = 'Success! Scrolling...';
-                            setTimeout(() => {
-                              button.textContent = 'Scroll Failed - Click to Try Again';
-                              button.disabled = false;
-                              // Add retry functionality
-                              button.onClick = (event) => {
-                                event.preventDefault();
-                                button.textContent = 'Scrolling...';
-                                button.disabled = true;
-                                // Reset attempts and try again
-                                attempts = 0;
-                                pageReadyAttempts = 0;
-                                checkPageReady();
-                              };
-                            }, 1000);
-                          }
-                          return;
-                        }
-                      } catch (error) {
-                        console.log('Direct navigation also failed:', error);
-                      }
-                      
-                      if (button) {
-                        button.textContent = 'Scroll Failed - Click to Try Again';
-                        button.disabled = false;
-                        // Add retry functionality
-                        button.onClick = (event) => {
-                          event.preventDefault();
-                          button.textContent = 'Scrolling...';
-                          button.disabled = true;
-                          // Reset attempts and try again
-                          attempts = 0;
-                          pageReadyAttempts = 0;
-                          checkPageReady();
-                        };
-                      }
-                      return;
-                    }
-                    
-                    attempts++;
-                    console.log(`Scroll attempt ${attempts}/${maxAttempts}`);
-                    
-                    if (scrollToAITherapist()) {
-                      scrollSuccess = true;
-                      console.log('Scroll successful!');
-                      if (button) {
-                        button.textContent = 'Success! Scrolling...';
-                        setTimeout(() => {
-                          button.textContent = 'Scroll Failed - Click to Try Again';
-                          button.disabled = false;
-                          // Add retry functionality
-                          button.onClick = (event) => {
-                            event.preventDefault();
-                            button.textContent = 'Scrolling...';
-                            button.disabled = true;
-                            // Reset attempts and try again
-                            attempts = 0;
-                            pageReadyAttempts = 0;
-                            checkPageReady();
-                          };
-                        }, 1000);
-                      }
-                    } else {
-                      // Try again after a delay
-                      setTimeout(attemptScroll, 300);
-                    }
-                  };
-                  
-                  // Start the process
-                  checkPageReady();
-                  
-                  // Also add a fallback message after a longer delay
-                  setTimeout(() => {
-                    if (button && button.textContent === 'Scrolling...') {
-                      button.textContent = 'Scroll Failed - Click to Try Again';
-                      button.disabled = false;
-                      // Add retry functionality
-                      button.onClick = (event) => {
-                        event.preventDefault();
-                        button.textContent = 'Scrolling...';
-                        button.disabled = true;
-                        // Reset attempts and try again
-                        attempts = 0;
-                        pageReadyAttempts = 0;
-                        checkPageReady();
-                      };
-                    }
-                  }, 15000); // 15 seconds fallback
-                } else {
-                  // User is not logged in, redirect to login
-                  console.log('User not logged in, redirecting to login...');
-                  window.location.href = '/auth';
+              <Download size={22} />
+              Export Results
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                const element = document.getElementById('ai-therapist');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="border-2 border-blue-400 text-blue-700 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="border-2 border-blue-400 bg-white text-blue-700 px-10 py-4 rounded-full font-bold text-lg hover:bg-blue-50 hover:shadow-lg transition-all duration-300 flex items-center gap-2"
             >
-              {user ? 'Chat with AI Therapist' : 'Login to Chat with AI Therapist'}
-            </button>
-          </div>
+              <Users size={22} />
+              {user ? 'Chat with AI Therapist' : 'Login to Chat'}
+            </motion.button>
+          </motion.div>
 
-          {/* Assessment Details */}
-          <div className="mt-8 text-center text-sm text-gray-500 bg-gray-50 rounded-xl p-6">
-            <div className="grid md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <p className="font-medium text-gray-700">Assessment Time</p>
-                <p>{Math.round((new Date().getTime() - startTime.getTime()) / 60000)} minutes</p>
+          {/* Assessment Summary Footer */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200"
+          >
+            <div className="grid md:grid-cols-3 gap-6 mb-4">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Clock className="text-blue-600" size={20} />
+                  <p className="font-bold text-gray-800">Assessment Time</p>
+                </div>
+                <p className="text-lg text-gray-600">{Math.round((new Date().getTime() - startTime.getTime()) / 60000)} minutes</p>
               </div>
-              <div>
-                <p className="font-medium text-gray-700">Questions Answered</p>
-                <p>{questions.length} of {questions.length}</p>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <CheckCircle className="text-green-600" size={20} />
+                  <p className="font-bold text-gray-800">Questions Answered</p>
+                </div>
+                <p className="text-lg text-gray-600">{questions.length} of {questions.length}</p>
               </div>
-              <div>
-                <p className="font-medium text-gray-700">Risk Level</p>
-                <p className={`capitalize ${result.color}`}>{result.riskLevel}</p>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <AlertCircle className={result.color} size={20} />
+                  <p className="font-bold text-gray-800">Risk Level</p>
+                </div>
+                <p className={`text-lg capitalize font-semibold ${result.color}`}>{result.riskLevel}</p>
               </div>
             </div>
-            <p><strong>Disclaimer:</strong> This assessment uses evidence-based screening tools but is for educational purposes only. It does not replace professional mental health diagnosis, treatment, or medical advice. If you're experiencing a mental health emergency, please contact emergency services or a crisis hotline immediately.</p>
-          </div>
-        </div>
+            
+            <div className="text-center text-sm text-gray-600 bg-white rounded-xl p-4 border border-gray-200">
+              <p className="mb-2"><strong>📋 Assessment Based On:</strong> PHQ-9 (Depression), GAD-7 (Anxiety), and comprehensive wellness screening</p>
+              <p><strong>⚠️ Disclaimer:</strong> This assessment uses evidence-based screening tools but is for educational purposes only. It does not replace professional mental health diagnosis, treatment, or medical advice. If you're experiencing a mental health emergency, please contact emergency services or a crisis hotline immediately.</p>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     );
   }

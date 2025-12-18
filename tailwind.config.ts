@@ -176,6 +176,10 @@ export default {
 				'scale-in': {
 					'0%': { opacity: '0', transform: 'scale(0.9)' },
 					'100%': { opacity: '1', transform: 'scale(1)' }
+				},
+				'shimmer': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
 				}
 			},
 				animation: {
@@ -190,7 +194,8 @@ export default {
 					'ambient-glow': 'ambient-glow 6s ease-in-out infinite',
 					'fade-in-up': 'fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
 					'fade-in': 'fade-in 0.6s ease-out',
-					'scale-in': 'scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+					'scale-in': 'scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+					'shimmer': 'shimmer 2s infinite'
 				},
 			backgroundImage: {
 				'ocean-flow': 'linear-gradient(135deg, #EAFDFC 0%, #C3F4EF 25%, #A8E4E0 60%, #326B70 100%)',

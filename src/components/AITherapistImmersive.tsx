@@ -280,7 +280,10 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
   };
 
   return (
-    <section id="ai-therapist" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-white to-pink-50 py-20">
+    <section id="ai-therapist" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50/40 via-pink-50/20 to-ocean-light/30 py-20">
+      
+      {/* Seamless Gradient Blend */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-transparent pointer-events-none" />
       
       {/* Ambient Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

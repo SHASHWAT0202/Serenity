@@ -136,6 +136,9 @@ const MeditationPlayer = () => {
   return (
     <section className={`relative min-h-screen flex items-center justify-center overflow-x-hidden ${track.gradient} transition-all duration-1000 py-12 md:py-20`}>
       
+      {/* Seamless Gradient Blend */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent pointer-events-none" />
+      
       {/* Dynamic Background Blobs */}
       <motion.div 
         className="absolute inset-0 overflow-hidden pointer-events-none"

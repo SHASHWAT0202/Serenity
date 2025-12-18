@@ -36,7 +36,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-r from-serenity-900 via-lavender-900 to-purple-900 text-white">
+    <footer className="relative bg-gradient-to-br from-serenity-900 via-lavender-900 to-purple-900 text-white overflow-hidden">
+      {/* Gradient Overlay for seamless blend */}
+      <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-ocean-light/20 via-transparent to-transparent pointer-events-none" />
+      
       {/* Crisis Support Banner */}
       <div className="bg-red-600 py-4">
         <div className="container mx-auto px-4 text-center">

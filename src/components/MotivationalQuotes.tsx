@@ -98,8 +98,10 @@ const MotivationalQuotes = () => {
   }, 5000);
 
   return (
-    <section id="motivational-quotes" className="py-20 px-4 bg-gradient-to-br from-purple-50 to-lavender-50">
-      <div className="container mx-auto max-w-4xl">
+    <section id="motivational-quotes" className="relative py-20 px-4 bg-gradient-to-br from-lavender-50/50 via-purple-50/30 to-pink-50/30 overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-lavender-100/10 to-transparent pointer-events-none" />
+      <div className="container mx-auto max-w-4xl relative z-10">
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-lavender-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-breathing">
             <Sparkles className="text-white" size={24} />

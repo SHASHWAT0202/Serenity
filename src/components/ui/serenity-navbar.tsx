@@ -3,15 +3,17 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, MessageCircle, BookOpen, Heart, Sparkles, User as UserIcon, LogOut, Calendar, FileText, Settings } from "lucide-react"
+import { Menu, X, MessageCircle, BookOpen, Heart, Sparkles, User as UserIcon, LogOut, Calendar, FileText, Settings, Crown } from "lucide-react"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { supabase } from '@/lib/supabaseClient'
+import { PricingModal } from '@/components/PricingModal'
 
 const SerenityNavbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isPricingOpen, setIsPricingOpen] = useState(false)
   const { user, signOut } = useAuth()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [fullName, setFullName] = useState<string | null>(null)
@@ -173,6 +175,11 @@ const SerenityNavbar = () => {
               <DropdownMenuContent align="end" className="w-56 bg-white/95 backdrop-blur-lg border-purple-100">
                 <DropdownMenuLabel className="text-purple-900">My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-purple-100" />
+                <DropdownMenuItem onClick={() => setIsPricingOpen(true)} className="hover:bg-purple-50 cursor-pointer">
+                  <Crown className="mr-2 h-4 w-4 text-yellow-600" />
+                  <span className="font-semibold text-purple-700">Upgrade to Pro</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-purple-100" />
                 <DropdownMenuItem onClick={() => navigate('/profile')} className="hover:bg-purple-50 cursor-pointer">
                   <UserIcon className="mr-2 h-4 w-4 text-purple-600" />
                   Profile
@@ -313,6 +320,9 @@ const SerenityNavbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Pricing Modal */}
+      <PricingModal isOpen={isPricingOpen} onClose={() => setIsPricingOpen(false)} />
     </div>
   )
 }

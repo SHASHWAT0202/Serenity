@@ -89,8 +89,10 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="py-20 px-4 bg-gradient-to-br from-serenity-50 to-purple-50">
-      <div className="container mx-auto max-w-6xl">
+    <section id="about" className="relative py-20 px-4 bg-gradient-to-br from-ocean-mist/40 via-lavender-50/30 to-ocean-light overflow-hidden">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-transparent pointer-events-none" />
+      <div className="container mx-auto max-w-6xl relative z-10">
         {/* Main About Section */}
         <div className="text-center mb-16">
           <div className="w-16 h-16 bg-gradient-to-br from-serenity-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-breathing">

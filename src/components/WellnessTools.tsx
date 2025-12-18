@@ -79,10 +79,11 @@ const WellnessTools = () => {
   };
 
   return (
-    <section id="wellness-tools" className="relative py-24 px-6 overflow-hidden bg-gradient-to-br from-ocean-light/30 via-white to-ocean-mist/30">
+    <section id="wellness-tools" className="relative py-24 px-6 overflow-hidden bg-gradient-to-br from-ocean-light/50 via-purple-50/20 to-pink-50/20">
       
       {/* Ambient Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ocean-aqua/5 to-transparent" />
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-ocean-aqua/10 rounded-full blur-4xl animate-drift" />
         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-ocean-primary/5 rounded-full blur-4xl animate-float-slow" />
       </div>

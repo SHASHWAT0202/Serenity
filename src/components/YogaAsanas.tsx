@@ -47,7 +47,7 @@ const YogaAsanas = () => {
           'Pranamasana – Return to prayer pose'
         ],
         mentalHealthBenefits: 'Synchronizing breath with movement enhances mindfulness, reduces stress, and uplifts mood.',
-        imageUrl: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop',
         category: 'energy'
       },
       {
@@ -70,7 +70,7 @@ const YogaAsanas = () => {
           'Hold and breathe evenly'
         ],
         mentalHealthBenefits: 'Opens the heart space and combats mild depression, creating feelings of positivity.',
-        imageUrl: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400&h=300&fit=crop',
         category: 'strength'
       },
       {
@@ -93,7 +93,7 @@ const YogaAsanas = () => {
           'Relax head between arms'
         ],
         mentalHealthBenefits: 'Reverses blood flow to the brain, improving focus and reducing anxiety.',
-        imageUrl: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=400&h=300&fit=crop',
         category: 'energy'
       },
       {
@@ -116,7 +116,7 @@ const YogaAsanas = () => {
           'Relax head and breathe deeply'
         ],
         mentalHealthBenefits: 'Creates a soothing inward focus, helping quiet overthinking and anxiety.',
-        imageUrl: 'https://images.unsplash.com/photo-1611080626919-7cf5a9c03b7d?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop',
         category: 'relaxation'
       },
       {
@@ -139,7 +139,7 @@ const YogaAsanas = () => {
           'Engage core and balance'
         ],
         mentalHealthBenefits: 'Inversions refresh the mind, improve focus, and relieve mild depression.',
-        imageUrl: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400&h=300&fit=crop',
         category: 'balance'
       },
       {
@@ -161,7 +161,7 @@ const YogaAsanas = () => {
           'Hold and breathe deeply'
         ],
         mentalHealthBenefits: 'Encourages deep relaxation and introspection, easing insomnia and anxiety.',
-        imageUrl: 'https://images.unsplash.com/photo-1594737625785-caa86f3ccdf4?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?w=400&h=300&fit=crop',
         category: 'relaxation'
       },
       {
@@ -183,7 +183,7 @@ const YogaAsanas = () => {
           'Look forward and hold'
         ],
         mentalHealthBenefits: 'Stimulates adrenal glands, reducing stress and fatigue while promoting optimism.',
-        imageUrl: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop',
         category: 'energy'
       },
       {
@@ -205,7 +205,7 @@ const YogaAsanas = () => {
           'Tilt head backward, crown on floor'
         ],
         mentalHealthBenefits: 'Opens the heart chakra, encouraging emotional release and mental clarity.',
-        imageUrl: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop',
         category: 'strength'
       },
       {
@@ -227,7 +227,7 @@ const YogaAsanas = () => {
           'Drop head back gently'
         ],
         mentalHealthBenefits: 'Opens emotional blocks in the heart area, promoting courage and positivity.',
-        imageUrl: 'https://images.unsplash.com/photo-1594737625785-caa86f3ccdf4?w=400&h=300&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop',
         category: 'strength'
       },
     
@@ -247,7 +247,7 @@ const YogaAsanas = () => {
         'Breathe deeply and hold the position'
       ],
       mentalHealthBenefits: 'This grounding pose helps quiet mental chatter and provides a sense of safety and security. Perfect for anxiety relief.',
-      imageUrl: 'https://images.unsplash.com/photo-1506629905607-ece2ef0bf5bb?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&h=300&fit=crop',
       category: 'relaxation'
     },
     {
@@ -266,7 +266,7 @@ const YogaAsanas = () => {
         'Repeat on other side'
       ],
       mentalHealthBenefits: 'Builds mental focus and confidence while promoting a sense of grounding and stability.',
-      imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop',
       category: 'balance'
     },
     {
@@ -285,7 +285,7 @@ const YogaAsanas = () => {
         'Breathe deeply and meditate'
       ],
       mentalHealthBenefits: 'The ultimate meditation pose that promotes inner peace and spiritual awareness. Excellent for reducing depression and anxiety.',
-      imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1602192509154-0b900ee1f851?w=400&h=300&fit=crop',
       category: 'relaxation'
     },
     {
@@ -304,7 +304,7 @@ const YogaAsanas = () => {
         'Hold and breathe, then switch sides'
       ],
       mentalHealthBenefits: 'Builds inner strength and courage while boosting self-confidence and determination.',
-      imageUrl: 'https://images.unsplash.com/photo-1506629905607-ece2ef0bf5bb?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=300&fit=crop',
       category: 'strength'
     },
     {
@@ -342,7 +342,7 @@ const YogaAsanas = () => {
         'Breathe deeply and stand tall'
       ],
       mentalHealthBenefits: 'Creates a sense of stability and presence, helping to ground anxious energy and build self-awareness.',
-      imageUrl: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop',
       category: 'balance'
     },
     {
@@ -380,7 +380,7 @@ const YogaAsanas = () => {
         'Breathe deeply in the pose'
       ],
       mentalHealthBenefits: 'Heart-opening pose that combats depression and fatigue while building emotional resilience and inner strength.',
-      imageUrl: 'https://images.unsplash.com/photo-1506629905607-ece2ef0bf5bb?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1593811167562-9cef47bfc4a7?w=400&h=300&fit=crop',
       category: 'energy'
     },
     {
@@ -399,7 +399,7 @@ const YogaAsanas = () => {
         'Breathe naturally and deeply'
       ],
       mentalHealthBenefits: 'Deeply restorative pose that activates the parasympathetic nervous system, providing instant anxiety relief and mental calm.',
-      imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?w=400&h=300&fit=crop',
       category: 'relaxation'
     },
     {
@@ -418,7 +418,7 @@ const YogaAsanas = () => {
         'Find balance and breathe, then switch sides'
       ],
       mentalHealthBenefits: 'Requires intense focus that quiets mental chatter and builds concentration while releasing tension in shoulders and back.',
-      imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=300&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop',
       category: 'balance'
     }
   ];

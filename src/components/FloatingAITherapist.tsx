@@ -49,8 +49,8 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
     setIsCallInProgress(true);
     try {
       const call = await vapi.calls.create({ 
-        assistantId: 'ce5fe09a-ff18-4c58-be57-382879dac614',
-        phoneNumberId: 'f3cf295d-4d54-4709-b5a8-d6e9172ae236',
+        assistantId: '71b1fc88-18ac-4acf-8006-4c67c45f34fb',
+        phoneNumberId: '5be2e60c-649a-475f-ae9e-5bc42e6fd37c',
         customer: { number: phoneNumber },
       });
       console.log('Call initiated:', call.id);

@@ -373,7 +373,7 @@ const AITherapistImmersive = () => {
                     {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                   </motion.button>
                 )} */}
-                <VapiWidget apiKey='4090f4c6-7d97-4f23-b113-25668300bce2' assistantId='ce5fe09a-ff18-4c58-be57-382879dac614' /> 
+                <VapiWidget apiKey='962f2bcd-a5b3-40e5-9432-7d839181ccc5' assistantId='71b1fc88-18ac-4acf-8006-4c67c45f34fb' /> 
       
               </div>
             </div>

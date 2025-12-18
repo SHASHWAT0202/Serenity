@@ -2,8 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Bot, Phone } from 'lucide-react';
 import { VapiClient } from '@vapi-ai/server-sdk';
-console.log(import.meta.env.VITE_VAPI_API_KEY);
-const vapi = new VapiClient({ token: import.meta.env.VITE_VAPI_API_KEY! });
+console.log(import.meta.env.VITE_VAPI_PRIVATE_KEY);
+const vapi = new VapiClient({ token: import.meta.env.VITE_VAPI_PRIVATE_KEY! });
 
 
 interface FloatingAITherapistProps {
@@ -49,8 +49,8 @@ const FloatingAITherapist = ({ onOpenFullChat }: FloatingAITherapistProps) => {
     setIsCallInProgress(true);
     try {
       const call = await vapi.calls.create({ 
-        assistantId: '71b1fc88-18ac-4acf-8006-4c67c45f34fb',
-        phoneNumberId: '5be2e60c-649a-475f-ae9e-5bc42e6fd37c',
+        assistantId: import.meta.env.VITE_VAPI_ASSISTANT_ID!,
+        phoneNumberId: import.meta.env.VITE_VAPI_PHONE_NUMBER_ID!,
         customer: { number: phoneNumber },
       });
       console.log('Call initiated:', call.id);

@@ -621,7 +621,7 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity foll
                     >
                       {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                     </button> */}
-                    <VapiWidget apiKey='962f2bcd-a5b3-40e5-9432-7d839181ccc5' assistantId='71b1fc88-18ac-4acf-8006-4c67c45f34fb' /> 
+                    <VapiWidget apiKey={import.meta.env.VITE_VAPI_PUBLIC_KEY!} assistantId={import.meta.env.VITE_VAPI_ASSISTANT_ID!} /> 
                   </div>
                 </div>
                 

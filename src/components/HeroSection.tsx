@@ -18,7 +18,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-ocean-light via-purple-50/30 to-pink-50/30">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-ocean-light via-purple-50/30 to-pink-50/30 pt-20 sm:pt-24 pb-16 sm:pb-20">
       
       {/* Dynamic Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -32,7 +32,7 @@ const HeroSection = () => {
         
         {/* Large animated blobs */}
         <motion.div 
-          className="absolute -top-32 -left-32 w-[600px] h-[600px] bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl"
+          className="absolute -top-32 -left-32 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 90, 0],
@@ -45,7 +45,7 @@ const HeroSection = () => {
         />
         
         <motion.div 
-          className="absolute top-1/4 -right-32 w-[500px] h-[500px] bg-gradient-to-bl from-lavender-300/25 to-purple-300/25 rounded-full blur-3xl"
+          className="absolute top-1/4 -right-32 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-gradient-to-bl from-lavender-300/25 to-purple-300/25 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.3, 1],
             rotate: [0, -90, 0],
@@ -59,7 +59,7 @@ const HeroSection = () => {
         />
         
         <motion.div 
-          className="absolute bottom-0 left-1/3 w-[700px] h-[700px] bg-gradient-to-tr from-pink-200/30 to-lavender-200/30 rounded-full blur-3xl"
+          className="absolute bottom-0 left-1/3 w-[350px] h-[350px] sm:w-[550px] sm:h-[550px] md:w-[700px] md:h-[700px] bg-gradient-to-tr from-pink-200/30 to-lavender-200/30 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.15, 1],
             x: [0, 50, 0],
@@ -129,29 +129,29 @@ const HeroSection = () => {
 
       {/* Content Container */}
       <motion.div 
-        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full"
         style={{ opacity, y: y1 }}
       >
         
         {/* Floating badge */}
         <motion.div
-          className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md rounded-full px-4 py-2 mb-6 shadow-lg border border-purple-200/50"
+          className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/80 backdrop-blur-md rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-4 sm:mb-6 shadow-lg border border-purple-200/50"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-          <span className="text-sm font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-yellow-500" />
+          <span className="text-xs sm:text-sm font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Trusted by 10,000+ users
           </span>
         </motion.div>
 
         {/* Main Headline with staggered animation */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           {['Your', 'Safe', 'Space', 'for', 'Healing'].map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-600 via-lavender-500 to-pink-500 bg-clip-text text-transparent mr-4"
+              className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-purple-600 via-lavender-500 to-pink-500 bg-clip-text text-transparent mr-2 sm:mr-3 md:mr-4"
               initial={{ opacity: 0, y: 50, rotateX: 90 }}
               animate={{ opacity: 1, y: 0, rotateX: 0 }}
               transition={{ 
@@ -171,7 +171,7 @@ const HeroSection = () => {
 
         {/* Subheading with typing effect feel */}
         <motion.p 
-          className="text-lg sm:text-xl md:text-2xl text-purple-700/80 mb-12 max-w-3xl mx-auto px-4 leading-relaxed"
+          className="text-base sm:text-lg md:text-xl lg:text-2xl text-purple-700/80 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -194,7 +194,7 @@ const HeroSection = () => {
 
         {/* CTA Button with enhanced effects */}
         <motion.div
-          className="mb-16 relative inline-block"
+          className="mb-10 sm:mb-12 md:mb-16 relative inline-block"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
@@ -218,7 +218,7 @@ const HeroSection = () => {
               const aiSection = document.querySelector('#ai-therapist');
               aiSection?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="relative bg-gradient-to-r from-purple-500 via-purple-600 to-pink-500 text-white px-12 py-5 rounded-full text-lg font-semibold shadow-2xl overflow-hidden group"
+            className="relative bg-gradient-to-r from-purple-500 via-purple-600 to-pink-500 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-5 rounded-full text-sm sm:text-base md:text-lg font-semibold shadow-2xl overflow-hidden group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -235,8 +235,8 @@ const HeroSection = () => {
               }}
             />
             
-            <span className="relative flex items-center gap-3">
-              <Sparkles className="w-6 h-6" />
+            <span className="relative flex items-center gap-2 sm:gap-3">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
               Start Your Journey
               <motion.span
                 animate={{ x: [0, 5, 0] }}
@@ -250,7 +250,7 @@ const HeroSection = () => {
 
         {/* Trust Pills - Enhanced Feature Badges */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4 mb-8"
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8 px-2"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -263,7 +263,7 @@ const HeroSection = () => {
           ].map((feature, i) => (
             <motion.div
               key={i}
-              className="group relative bg-white/90 backdrop-blur-md rounded-2xl px-6 py-3 border border-purple-200/50 shadow-lg overflow-hidden"
+              className="group relative bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 border border-purple-200/50 shadow-lg overflow-hidden"
               whileHover={{ scale: 1.08, y: -5 }}
               initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -278,7 +278,7 @@ const HeroSection = () => {
                 className={`absolute inset-0 bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity`}
               />
               
-              <div className="relative flex items-center gap-3">
+              <div className="relative flex items-center gap-1.5 sm:gap-2 md:gap-3">
                 <motion.div
                   animate={{
                     rotate: [0, 10, -10, 0],
@@ -289,9 +289,9 @@ const HeroSection = () => {
                     delay: i * 0.3
                   }}
                 >
-                  <feature.icon className={`w-5 h-5 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`} strokeWidth={2.5} />
+                  <feature.icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`} strokeWidth={2.5} />
                 </motion.div>
-                <span className="text-sm font-semibold text-gray-700">{feature.label}</span>
+                <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-gray-700">{feature.label}</span>
               </div>
             </motion.div>
           ))}
@@ -299,7 +299,7 @@ const HeroSection = () => {
 
         {/* Scroll Indicator with enhanced animation */}
         <motion.div
-          className="mt-20"
+          className="mt-12 sm:mt-16 md:mt-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
@@ -312,7 +312,7 @@ const HeroSection = () => {
               window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
             }}
           >
-            <div className="relative w-7 h-12 border-2 border-purple-300/50 rounded-full flex justify-center p-2 group-hover:border-purple-400 transition-colors">
+            <div className="relative w-6 h-10 sm:w-7 sm:h-12 border-2 border-purple-300/50 rounded-full flex justify-center p-1.5 sm:p-2 group-hover:border-purple-400 transition-colors">
               <motion.div
                 className="w-2 h-2 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"
                 animate={{ 

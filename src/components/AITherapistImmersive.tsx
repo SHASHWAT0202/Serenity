@@ -280,33 +280,33 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
   };
 
   return (
-    <section id="ai-therapist" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50/40 via-pink-50/20 to-ocean-light/30 py-20">
+    <section id="ai-therapist" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50/40 via-pink-50/20 to-ocean-light/30 py-12 sm:py-16 md:py-20 px-4">
       
       {/* Seamless Gradient Blend */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-transparent pointer-events-none" />
       
       {/* Ambient Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-4xl animate-drift" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-pink-200/15 rounded-full blur-4xl animate-float-slow" />
+        <div className="absolute top-0 left-1/4 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-purple-200/20 rounded-full blur-4xl animate-drift" />
+        <div className="absolute bottom-0 right-1/4 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-pink-200/15 rounded-full blur-4xl animate-float-slow" />
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 relative z-10 max-w-6xl">
         
         {/* Floating AI Avatar */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-8 sm:mb-10 md:mb-12"
         >
           <div className="relative">
             {/* Breathing glow */}
-            <div className="absolute inset-0 bg-purple-400/30 rounded-full blur-3xl animate-breathing" />
+            <div className="absolute inset-0 bg-purple-400/30 rounded-full blur-2xl sm:blur-3xl animate-breathing" />
             
             {/* Avatar */}
-            <div className="relative w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-2xl animate-breathing">
-              <span className="text-5xl md:text-6xl">🤖</span>
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-2xl animate-breathing">
+              <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl">🤖</span>
             </div>
 
             {/* Typing indicator */}
@@ -316,12 +316,12 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0, opacity: 0 }}
-                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full shadow-lg"
+                  className="absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/90 backdrop-blur-md rounded-full shadow-lg"
                 >
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-2 h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="flex gap-1 sm:gap-1.5">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </motion.div>
               )}
@@ -330,7 +330,7 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
         </motion.div>
 
         {/* Messages - Floating Bubbles */}
-        <div className="space-y-6 mb-8 min-h-[400px] max-h-[500px] overflow-y-auto overflow-x-hidden px-4 scroll-smooth" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(168, 85, 247, 0.2) transparent' }}>
+        <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8 min-h-[300px] sm:min-h-[400px] max-h-[400px] sm:max-h-[500px] overflow-y-auto overflow-x-hidden px-2 sm:px-4 scroll-smooth" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(168, 85, 247, 0.2) transparent' }}>
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.div
@@ -346,7 +346,7 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
               >
                 <div
                   className={`
-                    max-w-2xl px-8 py-6 rounded-[32px] shadow-lg backdrop-blur-sm
+                    max-w-[85%] sm:max-w-2xl px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 rounded-2xl sm:rounded-[28px] md:rounded-[32px] shadow-lg backdrop-blur-sm
                     ${message.sender === 'user' 
                       ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white' 
                       : 'bg-white/80 text-purple-900 border border-purple-200/50'
@@ -356,10 +356,10 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
                     transform: `translateY(${index * 2}px)`,
                   }}
                 >
-                  <p className="text-base md:text-lg leading-relaxed whitespace-pre-wrap">
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed whitespace-pre-wrap break-words">
                     {message.text}
                   </p>
-                  <div className={`text-xs mt-2 ${message.sender === 'user' ? 'text-white/70' : 'text-purple-500/50'}`}>
+                  <div className={`text-[10px] sm:text-xs mt-1.5 sm:mt-2 ${message.sender === 'user' ? 'text-white/70' : 'text-purple-500/50'}`}>
                     {message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -375,14 +375,14 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
                 transition={{ duration: 0.4 }}
                 className="flex justify-start"
               >
-                <div className="max-w-2xl px-8 py-6 rounded-[32px] shadow-lg backdrop-blur-sm bg-white/80 text-purple-900 border border-purple-200/50">
-                  <div className="flex items-center gap-3">
-                    <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '1s' }} />
-                      <div className="w-2.5 h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '1s' }} />
-                      <div className="w-2.5 h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '1s' }} />
+                <div className="max-w-[85%] sm:max-w-2xl px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 rounded-2xl sm:rounded-[28px] md:rounded-[32px] shadow-lg backdrop-blur-sm bg-white/80 text-purple-900 border border-purple-200/50">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="flex gap-1 sm:gap-1.5">
+                      <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '1s' }} />
+                      <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '1s' }} />
+                      <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-purple-500/60 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '1s' }} />
                     </div>
-                    <span className="text-sm text-purple-500/60">Thinking...</span>
+                    <span className="text-xs sm:text-sm text-purple-500/60">Thinking...</span>
                   </div>
                 </div>
               </motion.div>
@@ -400,17 +400,17 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="fixed top-24 left-1/2 -translate-x-1/2 z-50 max-w-md"
+              className="fixed top-20 sm:top-24 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 z-50 max-w-md mx-auto"
             >
-              <div className="bg-red-50 border-2 border-red-400 rounded-3xl px-8 py-6 shadow-2xl">
-                <div className="flex items-start gap-4">
-                  <AlertTriangle className="text-red-600 flex-shrink-0" size={24} />
+              <div className="bg-red-50 border-2 border-red-400 rounded-2xl sm:rounded-3xl px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 shadow-2xl">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <AlertTriangle className="text-red-600 flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
                   <div>
-                    <h3 className="font-semibold text-red-900 mb-2">We're here for you</h3>
-                    <p className="text-sm text-red-800 mb-3">
+                    <h3 className="font-semibold text-red-900 mb-1.5 sm:mb-2 text-sm sm:text-base">We're here for you</h3>
+                    <p className="text-xs sm:text-sm text-red-800 mb-2 sm:mb-3">
                       If you're in crisis, please reach out to KIRAN Mental Health Helpline:
                     </p>
-                    <a href="tel:18005990019" className="text-lg font-bold text-red-700 hover:text-red-900">
+                    <a href="tel:18005990019" className="text-base sm:text-lg font-bold text-red-700 hover:text-red-900">
                       📞 1800-599-0019
                     </a>
                   </div>
@@ -435,33 +435,34 @@ Recent chat:\n${recentHistory}\nUser: ${userMessage}\n\nRespond as Serenity (men
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Share what's on your mind..."
-              className="w-full px-8 py-5 text-lg bg-transparent outline-none text-purple-900 placeholder:text-purple-400/50"
+              className="w-full pl-4 sm:pl-6 md:pl-8 pr-24 sm:pr-28 py-3 sm:py-4 md:py-5 text-sm sm:text-base md:text-lg bg-transparent outline-none text-purple-900 placeholder:text-purple-400/50"
             />
             
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 sm:gap-2">
               {/* Voice Button */}
               {/* {speechSupported && (
                 <button
                   onClick={toggleVoiceInput}
-                  className={`p-3 rounded-full transition-all duration-300 ${
+                  className={`p-2 sm:p-3 rounded-full transition-all duration-300 ${
                     isListening 
                       ? 'bg-red-500 text-white animate-pulse' 
                       : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
                   }`}
                 >
-                  {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+                  {isListening ? <MicOff size={18} className="sm:w-5 sm:h-5" /> : <Mic size={18} className="sm:w-5 sm:h-5" />}
                 </button>
               )} */}
-              <VapiWidget apiKey={import.meta.env.VITE_VAPI_PUBLIC_KEY!} assistantId={import.meta.env.VITE_VAPI_ASSISTANT_ID!} /> 
+              <div className="scale-75 sm:scale-90 md:scale-100">
+                <VapiWidget apiKey={import.meta.env.VITE_VAPI_PUBLIC_KEY!} assistantId={import.meta.env.VITE_VAPI_ASSISTANT_ID!} /> 
+              </div>
       
-
               {/* Send Button */}
               <button
                 onClick={handleSendMessage}
                 disabled={!inputText.trim() || isTyping}
-                className="p-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
+                className="p-2 sm:p-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                <Send size={20} />
+                <Send size={16} className="sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>

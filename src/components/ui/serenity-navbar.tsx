@@ -80,23 +80,23 @@ const SerenityNavbar = () => {
   ]
 
   return (
-    <div className="flex justify-center w-full py-4 px-4 fixed top-0 z-[2147483647] pointer-events-none">
-      <div className="flex items-center justify-between px-6 py-3 bg-white/90 backdrop-blur-lg rounded-full shadow-[0_8px_30px_rgb(147,51,234,0.12)] w-full max-w-5xl relative pointer-events-auto border border-purple-100/50">
+    <div className="flex justify-center w-full py-2 sm:py-3 md:py-4 px-2 sm:px-4 fixed top-0 z-[2147483647] pointer-events-none">
+      <div className="flex items-center justify-between px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white/90 backdrop-blur-lg rounded-full shadow-[0_8px_30px_rgb(147,51,234,0.12)] w-full max-w-[95vw] sm:max-w-5xl relative pointer-events-auto border border-purple-100/50">
         
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <motion.div
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-1.5 sm:space-x-2"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-md">
-              <span className="text-white text-xl">🧘‍♀️</span>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-md">
+              <span className="text-lg sm:text-xl">🧘‍♀️</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+              <h1 className="text-base sm:text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
                 Serenity
               </h1>
             </div>
@@ -139,7 +139,7 @@ const SerenityNavbar = () => {
         </nav>
 
         {/* Desktop User Controls */}
-        <div className="hidden lg:flex items-center space-x-3">
+        <div className="hidden lg:flex items-center space-x-2 xl:space-x-3">
           {!user ? (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -149,7 +149,7 @@ const SerenityNavbar = () => {
             >
               <Link
                 to="/auth"
-                className="inline-flex items-center justify-center px-5 py-2 text-sm text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full hover:shadow-lg transition-all"
+                className="inline-flex items-center justify-center px-4 xl:px-5 py-1.5 xl:py-2 text-xs xl:text-sm text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full hover:shadow-lg transition-all"
               >
                 Sign In
               </Link>
@@ -158,16 +158,16 @@ const SerenityNavbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none">
                 <motion.div 
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-purple-50 transition-all"
+                  className="flex items-center gap-1.5 xl:gap-2 px-2 xl:px-3 py-1 xl:py-1.5 rounded-full hover:bg-purple-50 transition-all"
                   whileHover={{ scale: 1.05 }}
                 >
-                  <Avatar className="w-8 h-8">
+                  <Avatar className="w-7 h-7 xl:w-8 xl:h-8">
                     <AvatarImage src={avatarUrl || undefined} alt={fullName || 'User'} />
                     <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs">
                       {(fullName || user.email || 'U').slice(0,1).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium text-gray-700 max-w-[100px] truncate hidden xl:block">
+                  <span className="text-xs xl:text-sm font-medium text-gray-700 max-w-[80px] xl:max-w-[100px] truncate hidden xl:block">
                     {fullName || 'User'}
                   </span>
                 </motion.div>
@@ -210,11 +210,11 @@ const SerenityNavbar = () => {
 
         {/* Mobile Menu Button */}
         <motion.button 
-          className="lg:hidden flex items-center" 
+          className="lg:hidden flex items-center p-1.5 sm:p-2 rounded-full hover:bg-purple-50 transition-colors" 
           onClick={toggleMenu} 
           whileTap={{ scale: 0.9 }}
         >
-          <Menu className="h-6 w-6 text-purple-600" />
+          <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
         </motion.button>
       </div>
 
@@ -222,24 +222,24 @@ const SerenityNavbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-gradient-to-br from-purple-50 to-pink-50 z-[2147483648] pt-24 px-6 lg:hidden pointer-events-auto"
+            className="fixed inset-0 bg-gradient-to-br from-purple-50 to-pink-50 z-[2147483648] pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 lg:hidden pointer-events-auto overflow-y-auto"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             <motion.button
-              className="absolute top-6 right-6 p-2 bg-white rounded-full shadow-lg"
+              className="absolute top-4 sm:top-5 md:top-6 right-4 sm:right-5 md:right-6 p-2 bg-white rounded-full shadow-lg"
               onClick={toggleMenu}
               whileTap={{ scale: 0.9 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <X className="h-6 w-6 text-purple-600" />
+              <X className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
             </motion.button>
 
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-4 sm:space-y-5 md:space-y-6">
               {navItems.map((item, i) => {
                 if (item.requireAuth && !user) return null
                 
@@ -254,18 +254,18 @@ const SerenityNavbar = () => {
                     {item.to ? (
                       <Link 
                         to={item.to} 
-                        className="text-lg text-gray-900 font-medium flex items-center gap-2" 
+                        className="text-base sm:text-lg text-gray-900 font-medium flex items-center gap-2" 
                         onClick={toggleMenu}
                       >
-                        {item.icon && <item.icon size={20} className="text-purple-600" />}
+                        {item.icon && <item.icon size={18} className="sm:w-5 sm:h-5 text-purple-600" />}
                         {item.label}
                       </Link>
                     ) : (
                       <button 
                         onClick={() => { item.onClick?.(); toggleMenu(); }}
-                        className="text-lg text-gray-900 font-medium flex items-center gap-2 w-full text-left"
+                        className="text-base sm:text-lg text-gray-900 font-medium flex items-center gap-2 w-full text-left"
                       >
-                        {item.icon && <item.icon size={20} className="text-purple-600" />}
+                        {item.icon && <item.icon size={18} className="sm:w-5 sm:h-5 text-purple-600" />}
                         {item.label}
                       </button>
                     )}
@@ -278,12 +278,12 @@ const SerenityNavbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="pt-6 space-y-4"
+                className="pt-4 sm:pt-5 md:pt-6 space-y-3 sm:space-y-4"
               >
                 {!user ? (
                   <Link
                     to="/auth"
-                    className="inline-flex items-center justify-center w-full px-5 py-3 text-base text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full hover:shadow-lg transition-all"
+                    className="inline-flex items-center justify-center w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full hover:shadow-lg transition-all active:scale-95"
                     onClick={toggleMenu}
                   >
                     Sign In
@@ -292,25 +292,25 @@ const SerenityNavbar = () => {
                   <>
                     <Link
                       to="/profile"
-                      className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-md"
+                      className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md"
                       onClick={toggleMenu}
                     >
-                      <Avatar className="w-12 h-12">
+                      <Avatar className="w-10 h-10 sm:w-12 sm:h-12">
                         <AvatarImage src={avatarUrl || undefined} alt={fullName || 'User'} />
-                        <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+                        <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-sm sm:text-base">
                           {(fullName || user.email || 'U').slice(0,1).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-semibold text-gray-900">{fullName || 'User'}</p>
-                        <p className="text-sm text-gray-500">View Profile</p>
+                        <p className="font-semibold text-gray-900 text-sm sm:text-base">{fullName || 'User'}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">View Profile</p>
                       </div>
                     </Link>
                     <button
                       onClick={() => { handleSignOut(); toggleMenu(); }}
-                      className="inline-flex items-center justify-center w-full px-5 py-3 text-base text-red-600 bg-white border-2 border-red-200 rounded-full hover:bg-red-50 transition-all"
+                      className="inline-flex items-center justify-center w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-red-600 bg-white border-2 border-red-200 rounded-full hover:bg-red-50 transition-all active:scale-95"
                     >
-                      <LogOut className="mr-2 h-5 w-5" />
+                      <LogOut className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                       Sign Out
                     </button>
                   </>
